@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amira.assist — Der KI-Copilot für Ihre Agenten</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Nunito:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #FCFAFD; --bg-dark: #08001a; --action1: #FF11BB; --action2: #2DC8B0;
+  --accent: #5A189A; --primary: #3C0CA5; --secondary: #0A006A; --text: #121212;
+  --text-muted: #64607a; --border-light: rgba(90,24,154,0.06);
+  --font: 'Inter', 'Nunito', 'Poppins', sans-serif;
+  --radius-sm: 12px; --radius-md: 20px; --radius-lg: 30px; --radius-pill: 100px;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1); --ease-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --shadow-sm: 0 2px 8px rgba(10,0,106,0.04); --shadow-md: 0 8px 30px rgba(10,0,106,0.06);
+  --shadow-lg: 0 20px 60px rgba(10,0,106,0.08); --shadow-xl: 0 40px 100px rgba(10,0,106,0.12);
+  --section-pad: clamp(80px, 10vw, 140px);
+  --module-color: #2DC8B0;
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--font); color: var(--text); background: var(--bg); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+a { text-decoration: none; color: inherit; }
+.container { max-width: 1240px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 48px); }
+
+/* NAV */
+.nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 16px 0; transition: all 0.4s var(--ease-smooth); }
+.nav.scrolled { background: rgba(252,250,253,0.92); backdrop-filter: blur(20px) saturate(1.8); border-bottom: 1px solid var(--border-light); padding: 10px 0; }
+.nav-inner { max-width: 1240px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 48px); display: flex; align-items: center; justify-content: space-between; }
+.nav-brand { display: flex; align-items: center; gap: 12px; color: var(--secondary); font-weight: 800; font-size: 22px; letter-spacing: -0.5px; }
+.nav-logo { width: 36px; height: 36px; background: linear-gradient(135deg, var(--action1), var(--accent), var(--primary)); border-radius: 10px; position: relative; box-shadow: 0 4px 16px rgba(255,17,187,0.2); }
+.nav-logo::after { content: ''; position: absolute; inset: 3px; background: rgba(255,255,255,0.15); border-radius: 7px; clip-path: polygon(50% 5%, 75% 20%, 95% 50%, 75% 80%, 50% 95%, 25% 80%, 5% 50%, 25% 20%); }
+.nav-links { display: flex; align-items: center; gap: 4px; list-style: none; }
+.nav-link { font-size: 14px; font-weight: 500; color: var(--text-muted); padding: 8px 18px; border-radius: var(--radius-pill); transition: all 0.25s; }
+.nav-link:hover { color: var(--secondary); background: rgba(90,24,154,0.04); }
+.nav-link.active { color: var(--module-color); font-weight: 600; }
+.nav-cta-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 26px; background: var(--secondary); color: #fff !important; font-size: 14px; font-weight: 600; border-radius: var(--radius-pill); transition: all 0.3s var(--ease); box-shadow: 0 2px 12px rgba(10,0,106,0.15); }
+.nav-cta-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(10,0,106,0.2); }
+.lang-toggle { font-size: 13px; font-weight: 600; color: var(--text-muted); background: rgba(90,24,154,0.04); border: 1px solid var(--border-light); padding: 6px 14px; border-radius: var(--radius-pill); cursor: pointer; transition: all 0.2s; }
+.nav-mobile { display: none; cursor: pointer; background: none; border: none; padding: 8px; }
+.nav-mobile span { display: block; width: 22px; height: 2px; background: var(--secondary); margin: 5px 0; border-radius: 2px; }
+
+/* HERO */
+.hero { min-height: 90vh; padding: 160px 0 100px; display: flex; align-items: center; background: linear-gradient(175deg, #f0f8f6 0%, var(--bg) 30%, #f0f5ff 60%, #eff5ff 100%); position: relative; overflow: hidden; }
+.hero-orb { position: absolute; border-radius: 50%; filter: blur(100px); pointer-events: none; }
+.hero-orb-1 { width: 500px; height: 500px; background: radial-gradient(circle, rgba(45,200,176,0.07) 0%, transparent 70%); top: -100px; right: -100px; }
+.hero-orb-2 { width: 400px; height: 400px; background: radial-gradient(circle, rgba(90,24,154,0.05) 0%, transparent 70%); bottom: -50px; left: -50px; }
+.hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(40px, 6vw, 80px); align-items: center; }
+.hero-content { position: relative; z-index: 2; }
+.hero-badge { display: inline-flex; align-items: center; gap: 10px; padding: 6px 6px 6px 8px; background: #fff; border: 1px solid var(--border-light); border-radius: var(--radius-pill); font-size: 13px; font-weight: 600; color: var(--text-muted); margin-bottom: 32px; box-shadow: var(--shadow-sm); }
+.hero-badge-tag { background: var(--module-color); color: #fff; padding: 4px 12px; border-radius: var(--radius-pill); font-size: 11px; font-weight: 700; }
+.hero h1 { font-size: clamp(38px, 5vw, 58px); font-weight: 800; line-height: 1.08; letter-spacing: -2px; color: var(--secondary); margin-bottom: 24px; }
+.hero h1 .highlight { background: linear-gradient(135deg, var(--module-color), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.hero-desc { font-size: clamp(16px, 1.4vw, 18px); line-height: 1.7; color: var(--text-muted); max-width: 480px; margin-bottom: 40px; }
+.hero-actions { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+.btn-primary { display: inline-flex; align-items: center; gap: 10px; padding: 16px 36px; background: var(--secondary); color: #fff; border: none; border-radius: var(--radius-pill); font-size: 16px; font-weight: 600; font-family: var(--font); cursor: pointer; transition: all 0.35s var(--ease); box-shadow: 0 4px 20px rgba(10,0,106,0.2); }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 36px rgba(10,0,106,0.25); }
+.btn-secondary { display: inline-flex; align-items: center; gap: 10px; padding: 16px 36px; background: #fff; color: var(--secondary); border: 1px solid rgba(90,24,154,0.12); border-radius: var(--radius-pill); font-size: 16px; font-weight: 600; font-family: var(--font); cursor: pointer; transition: all 0.35s var(--ease); box-shadow: var(--shadow-sm); }
+.btn-secondary:hover { background: #f8f4ff; transform: translateY(-2px); box-shadow: var(--shadow-md); }
+
+/* Hero assist demo */
+.hero-visual { position: relative; z-index: 2; }
+.hero-mockup { background: var(--bg-dark); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid rgba(255,255,255,0.06); box-shadow: var(--shadow-xl); }
+.mockup-toolbar { display: flex; align-items: center; gap: 8px; padding: 14px 20px; background: rgba(255,255,255,0.03); border-bottom: 1px solid rgba(255,255,255,0.06); }
+.mockup-dot { width: 10px; height: 10px; border-radius: 50%; }
+.dot-r { background: #ff5f57; } .dot-y { background: #febc2e; } .dot-g { background: #28c840; }
+.mockup-url { flex: 1; margin-left: 12px; background: rgba(255,255,255,0.05); border-radius: 8px; padding: 6px 14px; font-size: 12px; color: rgba(255,255,255,0.3); font-family: monospace; }
+.mockup-body { padding: 24px; min-height: 360px; background: linear-gradient(180deg, rgba(10,0,26,1), rgba(20,0,50,1)); display: flex; gap: 16px; }
+
+/* Assist interface layout */
+.assist-panel { flex: 1; }
+.assist-main { flex: 1.5; }
+
+/* Live translation panel */
+.translation-box { background: rgba(45,200,176,0.1); border: 1px solid rgba(45,200,176,0.3); border-radius: 12px; padding: 16px; margin-bottom: 16px; opacity: 0; animation: slideIn 0.6s var(--ease) 0.4s forwards; }
+.translation-label { font-size: 11px; font-weight: 700; color: var(--module-color); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+.translation-text { font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.5; }
+
+/* Knowledge suggestions */
+.kb-suggestions { opacity: 0; animation: slideIn 0.6s var(--ease) 0.8s forwards; }
+.kb-title { font-size: 11px; font-weight: 700; color: var(--module-color); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+.kb-item { background: rgba(45,200,176,0.08); border-left: 2px solid var(--module-color); padding: 10px 12px; margin-bottom: 8px; border-radius: 4px; font-size: 12px; color: rgba(255,255,255,0.65); }
+
+/* Auto summary */
+.summary-box { background: rgba(45,200,176,0.06); border: 1px solid rgba(45,200,176,0.2); border-radius: 12px; padding: 14px; margin-top: 16px; opacity: 0; animation: slideIn 0.6s var(--ease) 1.2s forwards; }
+.summary-label { font-size: 11px; font-weight: 700; color: var(--module-color); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
+.summary-text { font-size: 12px; color: rgba(255,255,255,0.6); line-height: 1.5; }
+
+/* Chat in main area */
+.chat-msg { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 16px; opacity: 0; animation: chatIn 0.5s var(--ease) forwards; }
+.chat-msg:nth-child(1) { animation-delay: 0.3s; } .chat-msg:nth-child(2) { animation-delay: 0.9s; }
+.chat-msg:nth-child(3) { animation-delay: 1.5s; } .chat-msg:nth-child(4) { animation-delay: 2.1s; }
+@keyframes chatIn { to { opacity: 1; transform: translateY(0); } from { opacity: 0; transform: translateY(10px); } }
+@keyframes slideIn { to { opacity: 1; transform: translateX(0); } from { opacity: 0; transform: translateX(-10px); } }
+.chat-avatar { width: 32px; height: 32px; border-radius: 10px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; color: #fff; }
+.chat-avatar.ai { background: linear-gradient(135deg, var(--module-color), var(--accent)); }
+.chat-avatar.user { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.08); color: rgba(255,255,255,0.5); }
+.chat-bubble { padding: 14px 18px; border-radius: 16px; font-size: 14px; line-height: 1.5; max-width: 85%; }
+.chat-bubble.ai-b { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.06); color: rgba(255,255,255,0.85); }
+.chat-bubble.user-b { background: linear-gradient(135deg, rgba(60,12,165,0.4), rgba(90,24,154,0.3)); border: 1px solid rgba(90,24,154,0.3); color: rgba(255,255,255,0.9); margin-left: auto; }
+.chat-metrics { display: flex; gap: 16px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.04); margin-top: 8px; }
+.chat-metric { font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.3); }
+.chat-metric .val { color: var(--module-color); font-weight: 700; }
+
+/* STATS BAND */
+.stats-band { padding: 64px 0; background: #fff; border-top: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light); }
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); }
+.stat-item { text-align: center; padding: 32px 16px; position: relative; }
+.stat-item::after { content: ''; position: absolute; top: 20%; right: 0; height: 60%; width: 1px; background: linear-gradient(to bottom, transparent, var(--border-light), transparent); }
+.stat-item:last-child::after { display: none; }
+.stat-val { font-size: clamp(36px, 4.5vw, 56px); font-weight: 800; letter-spacing: -2px; line-height: 1; margin-bottom: 8px; background: linear-gradient(135deg, var(--module-color), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.stat-label { font-size: 14px; color: var(--text-muted); font-weight: 500; }
+@media (max-width: 768px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } .stat-item:nth-child(2)::after { display: none; } }
+
+/* SECTION HEADERS */
+.section-header { text-align: center; max-width: 680px; margin: 0 auto clamp(48px, 6vw, 80px); }
+.section-eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--module-color); margin-bottom: 20px; }
+.section-eyebrow-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--module-color); }
+.section-title { font-size: clamp(32px, 4.5vw, 52px); font-weight: 800; line-height: 1.1; letter-spacing: -1.5px; color: var(--secondary); margin-bottom: 20px; }
+.section-desc { font-size: clamp(16px, 1.3vw, 18px); line-height: 1.7; color: var(--text-muted); }
+
+/* FEATURES */
+.features { padding: var(--section-pad) 0; }
+.features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.feature-card { background: #fff; border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: clamp(32px, 3vw, 44px); transition: all 0.4s var(--ease); position: relative; overflow: hidden; }
+.feature-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--module-color), var(--accent)); transform: scaleX(0); transform-origin: left; transition: transform 0.4s var(--ease); }
+.feature-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: transparent; }
+.feature-card:hover::before { transform: scaleX(1); }
+.feature-icon { width: 52px; height: 52px; border-radius: 14px; background: linear-gradient(135deg, rgba(45,200,176,0.06), rgba(90,24,154,0.06)); border: 1px solid var(--border-light); display: flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 24px; }
+.feature-title { font-size: 19px; font-weight: 700; color: var(--secondary); margin-bottom: 10px; letter-spacing: -0.3px; }
+.feature-desc { font-size: 15px; color: var(--text-muted); line-height: 1.6; }
+@media (max-width: 900px) { .features-grid { grid-template-columns: 1fr; } }
+
+/* USE CASES */
+.use-cases { padding: var(--section-pad) 0; background: linear-gradient(180deg, #f8f4ff, var(--bg)); }
+.uc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.uc-card { background: #fff; border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: clamp(32px, 3vw, 48px); transition: all 0.4s var(--ease); }
+.uc-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+.uc-number { font-size: 48px; font-weight: 800; letter-spacing: -2px; background: linear-gradient(135deg, var(--module-color), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 16px; line-height: 1; }
+.uc-title { font-size: 22px; font-weight: 700; color: var(--secondary); margin-bottom: 12px; }
+.uc-desc { font-size: 15px; color: var(--text-muted); line-height: 1.6; }
+@media (max-width: 768px) { .uc-grid { grid-template-columns: 1fr; } }
+
+/* Integrations */
+.integrations { padding: var(--section-pad) 0; }
+.int-header { text-align: center; margin-bottom: 48px; }
+.int-title { font-size: clamp(24px, 3vw, 40px); font-weight: 800; letter-spacing: -1px; color: var(--secondary); margin-bottom: 16px; }
+.int-subtitle { font-size: 16px; color: var(--text-muted); }
+.int-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 20px; }
+.int-badge { background: #fff; border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 24px; display: flex; align-items: center; justify-content: center; font-weight: 600; color: var(--text-muted); transition: all 0.3s var(--ease); text-align: center; }
+.int-badge:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: var(--module-color); }
+@media (max-width: 768px) { .int-grid { grid-template-columns: repeat(3, 1fr); } }
+
+/* FAQ */
+.faq { padding: var(--section-pad) 0; }
+.faq-list { max-width: 780px; margin: 0 auto; }
+.faq-item { border-bottom: 1px solid var(--border-light); }
+.faq-q { display: flex; justify-content: space-between; align-items: center; padding: 28px 0; cursor: pointer; font-size: 18px; font-weight: 600; color: var(--secondary); transition: color 0.2s; }
+.faq-q:hover { color: var(--module-color); }
+.faq-q svg { transition: transform 0.3s; flex-shrink: 0; margin-left: 16px; }
+.faq-item.open .faq-q svg { transform: rotate(45deg); }
+.faq-a { max-height: 0; overflow: hidden; transition: max-height 0.4s var(--ease-smooth); }
+.faq-a-inner { padding: 0 0 28px; font-size: 15px; color: var(--text-muted); line-height: 1.7; }
+.faq-item.open .faq-a { max-height: 300px; }
+
+/* CTA */
+.cta-section { padding: var(--section-pad) 0; text-align: center; position: relative; overflow: hidden; }
+.cta-section::before { content: ''; position: absolute; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(45,200,176,0.06), transparent 60%); top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; }
+.cta-title { font-size: clamp(32px, 4.5vw, 52px); font-weight: 800; letter-spacing: -1.5px; line-height: 1.1; color: var(--secondary); margin-bottom: 20px; }
+.cta-desc { font-size: clamp(16px, 1.3vw, 18px); color: var(--text-muted); line-height: 1.7; max-width: 520px; margin: 0 auto 40px; }
+.cta-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+/* FOOTER */
+.footer { padding: 80px 0 40px; border-top: 1px solid var(--border-light); }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+.footer-brand-name { font-size: 22px; font-weight: 800; color: var(--secondary); margin-bottom: 12px; }
+.footer-brand-claim { font-size: 14px; color: var(--text-muted); font-style: italic; margin-bottom: 16px; }
+.footer-desc { font-size: 14px; color: var(--text-muted); line-height: 1.7; max-width: 300px; }
+.footer-col-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--secondary); margin-bottom: 20px; }
+.footer-col a { display: block; font-size: 14px; color: var(--text-muted); padding: 5px 0; transition: color 0.2s; font-weight: 500; }
+.footer-col a:hover { color: var(--primary); }
+.footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 32px; border-top: 1px solid var(--border-light); font-size: 13px; color: var(--text-muted); flex-wrap: wrap; gap: 16px; }
+@media (max-width: 768px) { .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; } }
+@media (max-width: 500px) { .footer-grid { grid-template-columns: 1fr; } }
+
+/* ANIMATIONS */
+.reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s var(--ease-smooth), transform 0.8s var(--ease-smooth); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-d1 { transition-delay: 0.1s; } .reveal-d2 { transition-delay: 0.2s; } .reveal-d3 { transition-delay: 0.3s; }
+@media (max-width: 960px) { .nav-links { display: none; } .nav-mobile { display: flex; flex-direction: column; } .hero-grid { grid-template-columns: 1fr; } .hero-visual { order: -1; } .mockup-body { flex-direction: column; } .int-grid { grid-template-columns: repeat(2, 1fr); } }
+</style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand"><div class="nav-logo"></div><span>Amira</span></a>
+    <ul class="nav-links">
+      <li><a href="agentic.html" class="nav-link">Amira.agentic</a></li>
+      <li><a href="analyze.html" class="nav-link">Amira.analyze</a></li>
+      <li><a href="assist.html" class="nav-link active">Amira.assist</a></li>
+      <li><a href="coach.html" class="nav-link">Amira.coach</a></li>
+      <li><a href="branchen.html" class="nav-link" data-de="Branchen" data-en="Industries">Branchen</a></li>
+      <li><span class="lang-toggle" id="langSwitch" onclick="toggleLang()">EN</span></li>
+      <li><a href="#cta" class="nav-cta-btn" data-de="Demo buchen" data-en="Book Demo">Demo buchen</a></li>
+    </ul>
+    <button class="nav-mobile" onclick="document.querySelector('.nav-links').classList.toggle('show')"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-orb hero-orb-1"></div><div class="hero-orb hero-orb-2"></div>
+  <div class="container">
+    <div class="hero-grid">
+      <div class="hero-content">
+        <div class="hero-badge"><span class="hero-badge-tag">ASSIST</span><span data-de="Der KI-Copilot für Ihre Agenten" data-en="The AI Copilot for Your Agents">Der KI-Copilot für Ihre Agenten</span></div>
+        <h1><span data-de="Superkräfte" data-en="Supercharged">Superkräfte</span><br><span class="highlight" data-de="für Ihre Mitarbeiter." data-en="for your agents.">für Ihre Mitarbeiter.</span><br><span data-de="In Echtzeit." data-en="In Real-Time.">In Echtzeit.</span></h1>
+        <p class="hero-desc" data-de="Amira.assist unterstützt Ihre Mitarbeiter mit Live-Übersetzung, Wissensmanagement und automatischen Zusammenfassungen — in Echtzeit." data-en="Amira.assist empowers your agents with live translation, knowledge management, and automatic summaries — in real-time.">Amira.assist unterstützt Ihre Mitarbeiter mit Live-Übersetzung, Wissensmanagement und automatischen Zusammenfassungen — in Echtzeit.</p>
+        <div class="hero-actions">
+          <a href="#cta" class="btn-primary" data-de="Demo buchen" data-en="Book a Demo">Demo buchen <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          <a href="#features" class="btn-secondary" data-de="Features entdecken" data-en="Explore Features">Features entdecken</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-mockup">
+          <div class="mockup-toolbar"><div class="mockup-dot dot-r"></div><div class="mockup-dot dot-y"></div><div class="mockup-dot dot-g"></div><div class="mockup-url">amira-ai.de/assist</div></div>
+          <div class="mockup-body">
+            <div class="assist-panel">
+              <div class="translation-box">
+                <div class="translation-label">🌍 Live Translation</div>
+                <div class="translation-text" data-de="Kunde spricht: Englisch (🇬🇧)" data-en="Customer speaking: English (🇬🇧)">Kunde spricht: Englisch (🇬🇧)</div>
+              </div>
+              <div class="kb-suggestions">
+                <div class="kb-title">💡 Knowledge Base</div>
+                <div class="kb-item">• Rückgaberichtlinie (30 Tage)</div>
+                <div class="kb-item">• Versandoptionen verfügbar</div>
+                <div class="kb-item">• Premium Support aktiv</div>
+              </div>
+              <div class="summary-box">
+                <div class="summary-label">📋 Auto Summary</div>
+                <div class="summary-text" data-de="3 Min Gespräch → 30 Sek Zusammenfassung" data-en="3 Min call → 30 sec summary">3 Min Gespräch → 30 Sek Zusammenfassung</div>
+              </div>
+            </div>
+            <div class="assist-main">
+              <div class="chat-msg"><div class="chat-avatar user">K</div><div class="chat-bubble user-b" data-de="I'd like to return my order" data-en="I'd like to return my order">I'd like to return my order</div></div>
+              <div class="chat-msg"><div class="chat-avatar ai">A</div><div class="chat-bubble ai-b" data-de="Ich möchte meine Bestellung zurückgeben" data-en="I'd like to return my order">Ich möchte meine Bestellung zurückgeben</div></div>
+              <div class="chat-msg"><div class="chat-avatar user">K</div><div class="chat-bubble user-b" data-de="The size doesn't fit" data-en="The size doesn't fit">The size doesn't fit</div></div>
+              <div class="chat-msg"><div class="chat-avatar ai">A</div><div class="chat-bubble ai-b" data-de="Verstanden. Wir kümmern uns um die Rücksendung." data-en="Understood. Processing return now.">Verstanden. Wir kümmern uns um die Rücksendung.</div></div>
+              <div class="chat-metrics">
+                <div class="chat-metric" data-de="Effizienz:" data-en="Efficiency:">Effizienz: <span class="val">+180%</span></div>
+                <div class="chat-metric" data-de="Präzision:" data-en="Accuracy:">Präzision: <span class="val">99%</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="stats-band">
+  <div class="container"><div class="stats-grid">
+    <div class="stat-item reveal"><div class="stat-val">0</div><div class="stat-label" data-de="Min Nachbearbeitung" data-en="Min After-call Work">Min Nachbearbeitung</div></div>
+    <div class="stat-item reveal reveal-d1"><div class="stat-val">-40%</div><div class="stat-label" data-de="Gesprächsdauer" data-en="Call Duration">Gesprächsdauer</div></div>
+    <div class="stat-item reveal reveal-d2"><div class="stat-val">120+</div><div class="stat-label" data-de="Sprachen" data-en="Languages">Sprachen</div></div>
+    <div class="stat-item reveal reveal-d3"><div class="stat-val">+25%</div><div class="stat-label" data-de="First Contact Resolution" data-en="First Contact Resolution">First Contact Resolution</div></div>
+  </div></div>
+</section>
+
+<section class="features" id="features">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-eyebrow"><span class="section-eyebrow-dot"></span> Features</div>
+      <h2 class="section-title" data-de="6 Superkräfte für Agenten" data-en="6 Superpowers for Agents">6 Superkräfte für Agenten</h2>
+      <p class="section-desc" data-de="Amira.assist macht jeden Mitarbeiter zum Profi — unabhängig von Sprache, Wissensstand oder Erfahrung." data-en="Amira.assist makes every agent a pro — regardless of language, knowledge, or experience.">Amira.assist macht jeden Mitarbeiter zum Profi — unabhängig von Sprache, Wissensstand oder Erfahrung.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card reveal"><div class="feature-icon">🌍</div><div class="feature-title" data-de="Live-Übersetzung" data-en="Live Translation">Live-Übersetzung</div><div class="feature-desc" data-de="Echtzeit-Sprachenkonvertierung in über 120 Sprachen — Kundensprache und Agenten-Sprache synchron." data-en="Real-time translation across 120+ languages — customer and agent languages synchronized.">Echtzeit-Sprachenkonvertierung in über 120 Sprachen — Kundensprache und Agenten-Sprache synchron.</div></div>
+      <div class="feature-card reveal reveal-d1"><div class="feature-icon">📚</div><div class="feature-title" data-de="Wissensmanagement" data-en="Knowledge Management">Wissensmanagement</div><div class="feature-desc" data-de="Intelligente Knowledge Base Integration — relevante Antworten werden proaktiv vorgeschlagen." data-en="Intelligent KB integration — relevant answers suggested proactively to agents.">Intelligente Knowledge Base Integration — relevante Antworten werden proaktiv vorgeschlagen.</div></div>
+      <div class="feature-card reveal reveal-d2"><div class="feature-icon">📋</div><div class="feature-title" data-de="Auto-Zusammenfassung" data-en="Auto-Summary">Auto-Zusammenfassung</div><div class="feature-desc" data-de="3-minütiges Gespräch → 30-Sekunden-Zusammenfassung. Automatisch notiert und ticketiert." data-en="3-minute call → 30-second summary. Auto-logged and ticketed instantly.">3-minütiges Gespräch → 30-Sekunden-Zusammenfassung. Automatisch notiert und ticketiert.</div></div>
+      <div class="feature-card reveal"><div class="feature-icon">🔗</div><div class="feature-title" data-de="System-Integration" data-en="System Integration">System-Integration</div><div class="feature-desc" data-de="Nahtlose Anbindung an Salesforce, SAP, Zendesk — Agenten sehen alle Daten auf einen Blick." data-en="Seamless CRM, ERP, ticketing integration — all data visible at a glance.">Nahtlose Anbindung an Salesforce, SAP, Zendesk — Agenten sehen alle Daten auf einen Blick.</div></div>
+      <div class="feature-card reveal reveal-d1"><div class="feature-icon">😊</div><div class="feature-title" data-de="Sentiment-Erkennung" data-en="Sentiment Detection">Sentiment-Erkennung</div><div class="feature-desc" data-de="Echtzeit-Emotional Intelligence — erkennt Frustrationen und warnt Agenten proaktiv." data-en="Real-time emotion detection — alerts agents to customer frustration instantly.">Echtzeit-Emotional Intelligence — erkennt Frustrationen und warnt Agenten proaktiv.</div></div>
+      <div class="feature-card reveal reveal-d2"><div class="feature-icon">🎯</div><div class="feature-title" data-de="Smart Routing" data-en="Smart Routing">Smart Routing</div><div class="feature-desc" data-de="Intelligente Verteilung zu Spezialisten — Agenten erhalten nur Anfragen in ihrer Expertise." data-en="Intelligent task distribution — agents get only calls they can handle best.">Intelligente Verteilung zu Spezialisten — Agenten erhalten nur Anfragen in ihrer Expertise.</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="integrations">
+  <div class="container">
+    <div class="int-header">
+      <h2 class="int-title" data-de="Mit den Tools, die Sie lieben" data-en="Integrates with Your Stack">Mit den Tools, die Sie lieben</h2>
+      <p class="int-subtitle" data-de="Nahtlose Verbindung zu Ihren bestehenden Systemen" data-en="Seamlessly connects with your existing systems">Nahtlose Verbindung zu Ihren bestehenden Systemen</p>
+    </div>
+    <div class="int-grid">
+      <div class="int-badge reveal">Salesforce</div>
+      <div class="int-badge reveal reveal-d1">SAP</div>
+      <div class="int-badge reveal reveal-d2">Zendesk</div>
+      <div class="int-badge reveal reveal-d3">Shopify</div>
+      <div class="int-badge reveal">HubSpot</div>
+      <div class="int-badge reveal reveal-d1">Teams</div>
+    </div>
+  </div>
+</section>
+
+<section class="use-cases">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-eyebrow"><span class="section-eyebrow-dot"></span> Use Cases</div>
+      <h2 class="section-title" data-de="Wo Amira.assist glänzt" data-en="Where Amira.assist Shines">Wo Amira.assist glänzt</h2>
+    </div>
+    <div class="uc-grid">
+      <div class="uc-card reveal"><div class="uc-number">01</div><div class="uc-title" data-de="Internationaler Support" data-en="International Support">Internationaler Support</div><div class="uc-desc" data-de="Agenten in Berlin beraten Kunden aus Tokyo, São Paulo und Sydney — ohne Sprachbarrieren." data-en="Agents in Berlin support customers from Tokyo, São Paulo, Sydney — no language barriers.">Agenten in Berlin beraten Kunden aus Tokyo, São Paulo und Sydney — ohne Sprachbarrieren.</div></div>
+      <div class="uc-card reveal reveal-d1"><div class="uc-number">02</div><div class="uc-title" data-de="Wissensdatenbank-Automatisierung" data-en="Knowledge Base Automation">Wissensdatenbank-Automatisierung</div><div class="uc-desc" data-de="Alle Antworten sind verfügbar — auch wenn der Kundenservice-Lead gerade Urlaub hat." data-en="All answers available — even when your product expert is on vacation.">Alle Antworten sind verfügbar — auch wenn der Kundenservice-Lead gerade Urlaub hat.</div></div>
+      <div class="uc-card reveal reveal-d2"><div class="uc-number">03</div><div class="uc-title" data-de="Agenten-Produktivität" data-en="Agent Productivity">Agenten-Produktivität</div><div class="uc-desc" data-de="-40% weniger Redezeit, 0 Minuten Nachbearbeitung — mehr Kapazität für komplexe Fälle." data-en="-40% shorter talks, 0 admin time — more capacity for complex issues.">-40% weniger Redezeit, 0 Minuten Nachbearbeitung — mehr Kapazität für komplexe Fälle.</div></div>
+      <div class="uc-card reveal reveal-d3"><div class="uc-number">04</div><div class="uc-title" data-de="Multi-System-Integration" data-en="Multi-System Integration">Multi-System-Integration</div><div class="uc-desc" data-de="CRM, ERP, Ticketing, Shop-System — alles integriert in eine Agent Assist Oberfläche." data-en="CRM, ERP, ticketing, shop system — all integrated into one assist dashboard.">CRM, ERP, Ticketing, Shop-System — alles integriert in eine Agent Assist Oberfläche.</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="faq">
+  <div class="container">
+    <div class="section-header"><div class="section-eyebrow"><span class="section-eyebrow-dot"></span> FAQ</div><h2 class="section-title" data-de="Häufig gestellte Fragen" data-en="Frequently Asked Questions">Häufig gestellte Fragen</h2></div>
+    <div class="faq-list">
+      <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')" data-de="Welche Sprachen werden unterstützt?" data-en="Which languages are supported?">Welche Sprachen werden unterstützt? <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div><div class="faq-a"><div class="faq-a-inner" data-de="Amira.assist unterstützt über 120 Sprachen mit natürlicher Sprachqualität. Von großen Sprachen (Deutsch, Englisch, Mandarin, Spanisch) bis zu seltenen Sprachen — alle mit Live-Übersetzung." data-en="Amira.assist supports 120+ languages with natural speech quality. From major languages to rare languages — all with live translation.">Amira.assist unterstützt über 120 Sprachen mit natürlicher Sprachqualität. Von großen Sprachen (Deutsch, Englisch, Mandarin, Spanisch) bis zu seltenen Sprachen — alle mit Live-Übersetzung.</div></div></div>
+      <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')" data-de="Wie lange dauert die Integration?" data-en="How long does integration take?">Wie lange dauert die Integration? <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div><div class="faq-a"><div class="faq-a-inner" data-de="1–2 Wochen für die Basis-Integration mit API-Anbindung. Mit vordefinierten Connectoren für Salesforce, SAP, Zendesk und Co. kann es noch schneller gehen — oft auch im Rahmen eines Tages." data-en="1-2 weeks for basic integration with API connections. With pre-built connectors for Salesforce, SAP, Zendesk, it's even faster — sometimes just days.">1–2 Wochen für die Basis-Integration mit API-Anbindung. Mit vordefinierten Connectoren für Salesforce, SAP, Zendesk und Co. kann es noch schneller gehen — oft auch im Rahmen eines Tages.</div></div></div>
+      <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')" data-de="Wie sicher ist die Echtzeitübersetzung?" data-en="Is real-time translation secure?">Wie sicher ist die Echtzeitübersetzung? <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div><div class="faq-a"><div class="faq-a-inner" data-de="Alle Übersetzungen erfolgen vollständig in Deutschland/EU (DSGVO-konform). Keine Speicherung persönlicher Daten, Ende-zu-Ende verschlüsselt, SOC 2 zertifiziert. Ihre Kundenkonversationen verlassen nie europäische Server." data-en="All translations happen entirely in Germany/EU (GDPR compliant). No personal data storage, end-to-end encrypted, SOC 2 certified. Customer conversations never leave EU servers.">Alle Übersetzungen erfolgen vollständig in Deutschland/EU (DSGVO-konform). Keine Speicherung persönlicher Daten, Ende-zu-Ende verschlüsselt, SOC 2 zertifiziert. Ihre Kundenkonversationen verlassen nie europäische Server.</div></div></div>
+      <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')" data-de="Kann Amira.assist mit unserem CRM integriert werden?" data-en="Can Amira.assist integrate with our CRM?">Kann Amira.assist mit unserem CRM integriert werden? <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div><div class="faq-a"><div class="faq-a-inner" data-de="Ja. Wir haben Pre-built Connectoren für die meisten Enterprise-Systeme (Salesforce, HubSpot, Pipedrive, etc.). Zusätzlich unterstützen wir REST-APIs und Webhooks für custom Integrationen." data-en="Yes. We have pre-built connectors for most enterprise systems (Salesforce, HubSpot, Pipedrive). We also support REST APIs and webhooks for custom integrations.">Ja. Wir haben Pre-built Connectoren für die meisten Enterprise-Systeme (Salesforce, HubSpot, Pipedrive, etc.). Zusätzlich unterstützen wir REST-APIs und Webhooks für custom Integrationen.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section" id="cta">
+  <div class="container">
+    <h2 class="cta-title reveal" data-de="Bereit, Ihre Agenten zu empowern?" data-en="Ready to Empower Your Agents?">Bereit, Ihre Agenten zu empowern?</h2>
+    <p class="cta-desc reveal reveal-d1" data-de="Sehen Sie, wie Amira.assist Ihren Kundenservice transformiert — Produktivität, Genauigkeit und Kundenzufriedenheit steigen sofort." data-en="See how Amira.assist transforms your service — productivity, accuracy, and satisfaction increase instantly.">Sehen Sie, wie Amira.assist Ihren Kundenservice transformiert — Produktivität, Genauigkeit und Kundenzufriedenheit steigen sofort.</p>
+    <div class="cta-actions reveal reveal-d2">
+      <a href="mailto:rainer@ac-group.ai" class="btn-primary" data-de="Demo vereinbaren" data-en="Schedule Demo">Demo vereinbaren <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      <a href="index.html" class="btn-secondary" data-de="Zurück zur Übersicht" data-en="Back to Overview">Zurück zur Übersicht</a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div><div class="footer-brand-name">Amira AI</div><div class="footer-brand-claim">almost human</div><div class="footer-desc" data-de="KI-Automatisierung für Kundenservice und Vertrieb." data-en="AI automation for customer service and sales.">KI-Automatisierung für Kundenservice und Vertrieb.</div></div>
+      <div class="footer-col"><div class="footer-col-title" data-de="Produkte" data-en="Products">Produkte</div><a href="agentic.html">Amira.agentic</a><a href="analyze.html">Amira.analyze</a><a href="assist.html">Amira.assist</a><a href="coach.html">Amira.coach</a></div>
+      <div class="footer-col"><div class="footer-col-title" data-de="Branchen" data-en="Industries">Branchen</div><a href="branchen.html">E-Commerce</a><a href="branchen.html">Contact Center</a><a href="branchen.html">Automotive</a></div>
+      <div class="footer-col"><div class="footer-col-title" data-de="Unternehmen" data-en="Company">Unternehmen</div><a href="#">Über uns</a><a href="#">Kontakt</a><a href="#">Impressum</a><a href="#">Datenschutz</a></div>
+    </div>
+    <div class="footer-bottom"><span>© 2026 AC Süppmayer GmbH</span><span>Saarbrücken 🇩🇪 · Dubai 🇦🇪</span></div>
+  </div>
+</footer>
+
+<script>
+let currentLang = 'de';
+function toggleLang() {
+  currentLang = currentLang === 'de' ? 'en' : 'de';
+  document.getElementById('langSwitch').textContent = currentLang === 'de' ? 'EN' : 'DE';
+  document.querySelectorAll('[data-de]').forEach(el => { const t = el.getAttribute('data-' + currentLang); if (t) el.textContent = t; });
+  document.documentElement.lang = currentLang;
+}
+const obs = new IntersectionObserver(e => { e.forEach(x => { if (x.isIntersecting) x.target.classList.add('visible'); }); }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+window.addEventListener('scroll', () => { document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 80); }, { passive: true });
+</script>
+</body>
+</html>
