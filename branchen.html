@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amira.branchen — Industrie-Lösungen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Nunito:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #FCFAFD; --bg-dark: #08001a; --action1: #FF11BB; --action2: #2DC8B0;
+  --accent: #5A189A; --primary: #3C0CA5; --secondary: #0A006A; --text: #121212;
+  --text-muted: #64607a; --border-light: rgba(90,24,154,0.06);
+  --font: 'Inter', 'Nunito', 'Poppins', sans-serif;
+  --radius-sm: 12px; --radius-md: 20px; --radius-lg: 30px; --radius-pill: 100px;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1); --ease-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --shadow-sm: 0 2px 8px rgba(10,0,106,0.04); --shadow-md: 0 8px 30px rgba(10,0,106,0.06);
+  --shadow-lg: 0 20px 60px rgba(10,0,106,0.08); --shadow-xl: 0 40px 100px rgba(10,0,106,0.12);
+  --section-pad: clamp(80px, 10vw, 140px);
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--font); color: var(--text); background: var(--bg); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+a { text-decoration: none; color: inherit; }
+.container { max-width: 1240px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 48px); }
+
+/* NAV */
+.nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 16px 0; transition: all 0.4s var(--ease-smooth); }
+.nav.scrolled { background: rgba(252,250,253,0.92); backdrop-filter: blur(20px) saturate(1.8); border-bottom: 1px solid var(--border-light); padding: 10px 0; }
+.nav-inner { max-width: 1240px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 48px); display: flex; align-items: center; justify-content: space-between; }
+.nav-brand { display: flex; align-items: center; gap: 12px; color: var(--secondary); font-weight: 800; font-size: 22px; letter-spacing: -0.5px; }
+.nav-logo { width: 36px; height: 36px; background: linear-gradient(135deg, var(--action1), var(--accent), var(--primary)); border-radius: 10px; position: relative; box-shadow: 0 4px 16px rgba(255,17,187,0.2); }
+.nav-logo::after { content: ''; position: absolute; inset: 3px; background: rgba(255,255,255,0.15); border-radius: 7px; clip-path: polygon(50% 5%, 75% 20%, 95% 50%, 75% 80%, 50% 95%, 25% 80%, 5% 50%, 25% 20%); }
+.nav-links { display: flex; align-items: center; gap: 4px; list-style: none; }
+.nav-link { font-size: 14px; font-weight: 500; color: var(--text-muted); padding: 8px 18px; border-radius: var(--radius-pill); transition: all 0.25s; }
+.nav-link:hover { color: var(--secondary); background: rgba(90,24,154,0.04); }
+.nav-link.active { color: var(--action1); font-weight: 600; }
+.nav-cta-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 26px; background: var(--secondary); color: #fff !important; font-size: 14px; font-weight: 600; border-radius: var(--radius-pill); transition: all 0.3s var(--ease); box-shadow: 0 2px 12px rgba(10,0,106,0.15); }
+.nav-cta-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(10,0,106,0.2); }
+.lang-toggle { font-size: 13px; font-weight: 600; color: var(--text-muted); background: rgba(90,24,154,0.04); border: 1px solid var(--border-light); padding: 6px 14px; border-radius: var(--radius-pill); cursor: pointer; transition: all 0.2s; }
+.nav-mobile { display: none; cursor: pointer; background: none; border: none; padding: 8px; }
+.nav-mobile span { display: block; width: 22px; height: 2px; background: var(--secondary); margin: 5px 0; border-radius: 2px; }
+
+/* HERO - Centered Layout */
+.hero { min-height: 70vh; padding: 160px 0 100px; display: flex; align-items: center; justify-content: center; background: linear-gradient(175deg, #fff0f8 0%, var(--bg) 30%, #f8f0ff 60%, #f5eeff 100%); position: relative; overflow: hidden; }
+.hero-orb { position: absolute; border-radius: 50%; filter: blur(100px); pointer-events: none; }
+.hero-orb-1 { width: 500px; height: 500px; background: radial-gradient(circle, rgba(255,17,187,0.07) 0%, transparent 70%); top: -100px; right: -100px; }
+.hero-orb-2 { width: 400px; height: 400px; background: radial-gradient(circle, rgba(90,24,154,0.05) 0%, transparent 70%); bottom: -50px; left: -50px; }
+.hero-content { position: relative; z-index: 2; text-align: center; max-width: 720px; }
+.section-eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--action1); margin-bottom: 20px; }
+.section-eyebrow-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--action1); }
+.hero h1 { font-size: clamp(38px, 5vw, 58px); font-weight: 800; line-height: 1.08; letter-spacing: -2px; color: var(--secondary); margin-bottom: 24px; }
+.hero h1 .highlight { background: linear-gradient(135deg, var(--action1), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.hero-desc { font-size: clamp(16px, 1.4vw, 18px); line-height: 1.7; color: var(--text-muted); margin-bottom: 40px; }
+.hero-actions { display: flex; gap: 16px; align-items: center; justify-content: center; flex-wrap: wrap; }
+.btn-primary { display: inline-flex; align-items: center; gap: 10px; padding: 16px 36px; background: var(--secondary); color: #fff; border: none; border-radius: var(--radius-pill); font-size: 16px; font-weight: 600; font-family: var(--font); cursor: pointer; transition: all 0.35s var(--ease); box-shadow: 0 4px 20px rgba(10,0,106,0.2); }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 36px rgba(10,0,106,0.25); }
+.btn-secondary { display: inline-flex; align-items: center; gap: 10px; padding: 16px 36px; background: #fff; color: var(--secondary); border: 1px solid rgba(90,24,154,0.12); border-radius: var(--radius-pill); font-size: 16px; font-weight: 600; font-family: var(--font); cursor: pointer; transition: all 0.35s var(--ease); box-shadow: var(--shadow-sm); }
+.btn-secondary:hover { background: #f8f4ff; transform: translateY(-2px); box-shadow: var(--shadow-md); }
+
+/* INDUSTRY SECTIONS */
+.industry-section { padding: var(--section-pad) 0; position: relative; }
+.industry-section:nth-child(even) { background: linear-gradient(180deg, #f8f4ff, var(--bg)); }
+.industry-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(40px, 6vw, 80px); align-items: center; }
+.industry-grid.reverse { direction: rtl; }
+.industry-grid.reverse > * { direction: ltr; }
+.industry-content { position: relative; z-index: 2; }
+.industry-icon { font-size: 56px; margin-bottom: 24px; }
+.industry-title { font-size: clamp(28px, 3.5vw, 44px); font-weight: 800; line-height: 1.1; letter-spacing: -1px; color: var(--secondary); margin-bottom: 16px; }
+.industry-desc { font-size: clamp(15px, 1.2vw, 17px); line-height: 1.7; color: var(--text-muted); margin-bottom: 32px; }
+.kpi-list { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 32px; }
+.kpi-item { background: #fff; border: 1px solid var(--border-light); border-radius: var(--radius-md); padding: 20px; display: flex; flex-direction: column; }
+.kpi-label { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 6px; }
+.kpi-value { font-size: 24px; font-weight: 800; background: linear-gradient(135deg, var(--action1), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.features-list { list-style: none; }
+.features-list li { padding: 12px 0; padding-left: 28px; position: relative; font-size: 15px; color: var(--text-muted); line-height: 1.6; }
+.features-list li::before { content: '✓'; position: absolute; left: 0; color: var(--action2); font-weight: 700; font-size: 18px; }
+
+/* INDUSTRY VISUAL CARD */
+.industry-visual { position: relative; z-index: 2; }
+.dashboard-card { background: linear-gradient(135deg, #fff 0%, #f8f4ff 100%); border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: clamp(32px, 3vw, 48px); box-shadow: var(--shadow-md); transition: all 0.4s var(--ease); }
+.dashboard-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+.dashboard-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px solid var(--border-light); }
+.dashboard-title { font-size: 16px; font-weight: 700; color: var(--secondary); }
+.dashboard-metric { width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, var(--action1), var(--accent)); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 20px; }
+.dashboard-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.stat-block { }
+.stat-block-value { font-size: 32px; font-weight: 800; background: linear-gradient(135deg, var(--action1), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 4px; }
+.stat-block-label { font-size: 13px; color: var(--text-muted); font-weight: 500; }
+.dashboard-chart { margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border-light); }
+.chart-bar { display: flex; gap: 6px; margin-bottom: 16px; }
+.chart-item { flex: 1; height: 32px; border-radius: 8px; background: linear-gradient(180deg, rgba(255,17,187,0.15), rgba(90,24,154,0.1)); position: relative; overflow: hidden; }
+.chart-item::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(90deg, var(--action1), var(--accent)); height: 4px; border-radius: 8px; }
+
+/* SECTION HEADERS */
+.section-header { text-align: center; max-width: 680px; margin: 0 auto clamp(48px, 6vw, 80px); }
+.section-title { font-size: clamp(32px, 4.5vw, 52px); font-weight: 800; line-height: 1.1; letter-spacing: -1.5px; color: var(--secondary); margin-bottom: 20px; }
+.section-desc { font-size: clamp(16px, 1.3vw, 18px); line-height: 1.7; color: var(--text-muted); }
+
+/* CTA */
+.cta-section { padding: var(--section-pad) 0; text-align: center; position: relative; overflow: hidden; }
+.cta-section::before { content: ''; position: absolute; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(255,17,187,0.06), transparent 60%); top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; }
+.cta-title { font-size: clamp(32px, 4.5vw, 52px); font-weight: 800; letter-spacing: -1.5px; line-height: 1.1; color: var(--secondary); margin-bottom: 20px; }
+.cta-desc { font-size: clamp(16px, 1.3vw, 18px); color: var(--text-muted); line-height: 1.7; max-width: 520px; margin: 0 auto 40px; }
+.cta-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+/* FOOTER */
+.footer { padding: 80px 0 40px; border-top: 1px solid var(--border-light); }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+.footer-brand-name { font-size: 22px; font-weight: 800; color: var(--secondary); margin-bottom: 12px; }
+.footer-brand-claim { font-size: 14px; color: var(--text-muted); font-style: italic; margin-bottom: 16px; }
+.footer-desc { font-size: 14px; color: var(--text-muted); line-height: 1.7; max-width: 300px; }
+.footer-col-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--secondary); margin-bottom: 20px; }
+.footer-col a { display: block; font-size: 14px; color: var(--text-muted); padding: 5px 0; transition: color 0.2s; font-weight: 500; }
+.footer-col a:hover { color: var(--primary); }
+.footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 32px; border-top: 1px solid var(--border-light); font-size: 13px; color: var(--text-muted); flex-wrap: wrap; gap: 16px; }
+@media (max-width: 768px) { .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; } }
+@media (max-width: 500px) { .footer-grid { grid-template-columns: 1fr; } }
+
+/* ANIMATIONS */
+.reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s var(--ease-smooth), transform 0.8s var(--ease-smooth); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-d1 { transition-delay: 0.1s; } .reveal-d2 { transition-delay: 0.2s; } .reveal-d3 { transition-delay: 0.3s; }
+@media (max-width: 960px) { .nav-links { display: none; } .nav-mobile { display: flex; flex-direction: column; } .industry-grid { grid-template-columns: 1fr; } .industry-grid.reverse { direction: ltr; } }
+</style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand"><div class="nav-logo"></div><span>Amira</span></a>
+    <ul class="nav-links">
+      <li><a href="agentic.html" class="nav-link">Amira.agentic</a></li>
+      <li><a href="analyze.html" class="nav-link">Amira.analyze</a></li>
+      <li><a href="assist.html" class="nav-link">Amira.assist</a></li>
+      <li><a href="coach.html" class="nav-link">Amira.coach</a></li>
+      <li><a href="branchen.html" class="nav-link active" data-de="Branchen" data-en="Industries">Branchen</a></li>
+      <li><span class="lang-toggle" id="langSwitch" onclick="toggleLang()">EN</span></li>
+      <li><a href="#cta" class="nav-cta-btn" data-de="Demo buchen" data-en="Book Demo">Demo buchen</a></li>
+    </ul>
+    <button class="nav-mobile" onclick="document.querySelector('.nav-links').classList.toggle('show')"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-orb hero-orb-1"></div><div class="hero-orb hero-orb-2"></div>
+  <div class="container">
+    <div class="hero-content">
+      <div class="section-eyebrow"><span class="section-eyebrow-dot"></span> <span data-de="BRANCHEN" data-en="INDUSTRIES">BRANCHEN</span></div>
+      <h1><span class="highlight" data-de="Maßgeschneidert für Ihre Branche." data-en="Tailored for Your Industry.">Maßgeschneidert für Ihre Branche.</span></h1>
+      <p class="hero-desc" data-de="Amira versteht die spezifischen Anforderungen Ihrer Branche und liefert maßgeschneiderte KI-Lösungen." data-en="Amira understands your industry's specific needs and delivers tailored AI solutions.">Amira versteht die spezifischen Anforderungen Ihrer Branche und liefert maßgeschneiderte KI-Lösungen.</p>
+      <div class="hero-actions">
+        <a href="#cta" class="btn-primary" data-de="Demo buchen" data-en="Book a Demo">Demo buchen <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+        <a href="agentic.html" class="btn-secondary" data-de="Zur Produktübersicht" data-en="To Product Overview">Zur Produktübersicht</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- E-COMMERCE SECTION -->
+<section class="industry-section">
+  <div class="container">
+    <div class="industry-grid reveal">
+      <div class="industry-content">
+        <div class="industry-icon">🛒</div>
+        <h2 class="industry-title" data-de="E-Commerce &amp; Retail" data-en="E-Commerce &amp; Retail">E-Commerce &amp; Retail</h2>
+        <p class="industry-desc" data-de="Von der Produktberatung bis zur Retoure — Amira automatisiert den gesamten E-Commerce-Kundenservice." data-en="From product advice to returns — Amira automates your entire e-commerce customer service.">Von der Produktberatung bis zur Retoure — Amira automatisiert den gesamten E-Commerce-Kundenservice.</p>
+
+        <div class="kpi-list">
+          <div class="kpi-item reveal-d1">
+            <span class="kpi-label" data-de="Conversion-Steigerung" data-en="Conversion Increase">Conversion-Steigerung</span>
+            <span class="kpi-value">+32%</span>
+          </div>
+          <div class="kpi-item reveal-d1">
+            <span class="kpi-label" data-de="Antwortzeit-Reduktion" data-en="Response Time Cut">Antwortzeit-Reduktion</span>
+            <span class="kpi-value">-60%</span>
+          </div>
+          <div class="kpi-item reveal-d2">
+            <span class="kpi-label" data-de="Abdeckung" data-en="Coverage">Abdeckung</span>
+            <span class="kpi-value">24/7</span>
+          </div>
+          <div class="kpi-item reveal-d2">
+            <span class="kpi-label" data-de="Kundenzufriedenheit" data-en="Satisfaction Increase">Kundenzufriedenheit</span>
+            <span class="kpi-value">+45%</span>
+          </div>
+        </div>
+
+        <ul class="features-list">
+          <li data-de="Bestellstatus &amp; Tracking" data-en="Order Status &amp; Tracking">Bestellstatus &amp; Tracking</li>
+          <li data-de="Retouren-Management" data-en="Returns Management">Retouren-Management</li>
+          <li data-de="Produktberatung &amp; Empfehlungen" data-en="Product Advice &amp; Recommendations">Produktberatung &amp; Empfehlungen</li>
+          <li data-de="Intelligentes Upselling" data-en="Intelligent Upselling">Intelligentes Upselling</li>
+        </ul>
+      </div>
+
+      <div class="industry-visual">
+        <div class="dashboard-card reveal-d3">
+          <div class="dashboard-header">
+            <span class="dashboard-title" data-de="E-Commerce Dashboard" data-en="E-Commerce Dashboard">E-Commerce Dashboard</span>
+            <div class="dashboard-metric">📊</div>
+          </div>
+          <div class="dashboard-stats">
+            <div class="stat-block">
+              <div class="stat-block-value">8.2K</div>
+              <div class="stat-block-label" data-de="Anfragen/Tag" data-en="Requests/Day">Anfragen/Tag</div>
+            </div>
+            <div class="stat-block">
+              <div class="stat-block-value">94%</div>
+              <div class="stat-block-label" data-de="Automatisierungsrate" data-en="Automation Rate">Automatisierungsrate</div>
+            </div>
+            <div class="stat-block">
+              <div class="stat-block-value">2m 15s</div>
+              <div class="stat-block-label" data-de="Ø Bearbeitungszeit" data-en="Avg Resolution Time">Ø Bearbeitungszeit</div>
+            </div>
+            <div class="stat-block">
+              <div class="stat-block-value">+€24K</div>
+              <div class="stat-block-label" data-de="Zusatzerlöse/Monat" data-en="Added Revenue/Month">Zusatzerlöse/Monat</div>
+            </div>
+          </div>
+          <div class="dashboard-chart">
+            <div class="chart-bar">
+              <div class="chart-item"></div>
+              <div class="chart-item"></div>
+              <div class="chart-item"></div>
+              <div class="chart-item"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT CENTER SECTION -->
+<section class="industry-section">
+  <div class="container">
+    <div class="industry-grid reverse reveal">
+      <div class="industry-visual">
+        <div class="dashboard-card reveal-d1">
+          <div class="dashboard-header">
+            <span class="dashboard-title" data-de="BPO Analytics" data-en="BPO Analytics">BPO Analytics</span>
+            <div class="dashboard-metric">📈</div>
+          </div>
+          <div class="dashboard-stats">
+            <div class="stat-block">
+              <div class="stat-block-value">45K</div>
+              <div class="stat-block-label" data-de="Kontakte/Monat" data-en="Contacts/Month">Kontakte/Monat</div>
+            </div>
+            <div class="stat-block">
+              <div class="stat-block-value">80%</div>
+              <div class="stat-block-label" data-de="First Contact Resolution" data-en="First Contact Resolution">First Contact Resolution</div>
+            </div>
+            <div class="stat-block">
+              <div class="stat-block-value">18s</div>
+              <div class="stat-block-label" data-de="Ø Wartezeit" data-en="Avg Wait Time">Ø Wartezeit</div>
+            </div>
+            <div class="stat-block">
+              <div class="stat-block-value">-45%</div>
+              <div class="stat-block-label" data-de="Kosten pro Kontakt" data-en="Cost per Contact">Kosten pro Kontakt</div>
+            </div>
+          </div>
+          <div class="dashboard-chart">
+            <div class="chart-bar">
+              <div class="chart-item"></div>
+              <div class="chart-item"></div>
+              <div class="chart-item"></div>
+              <div class="chart-item"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="industry-content">
+        <div class="industry-icon">🎧</div>
+        <h2 class="industry-title" data-de="Contact Center &amp; BPO" data-en="Contact Center &amp; BPO">Contact Center &amp; BPO</h2>
+        <p class="industry-desc" data-de="Skalierung ohne Personalaufbau. Amira übernimmt Routineanfragen und entlastet Ihre Agenten." data-en="Scale without hiring. Amira handles routine inquiries and frees up your agents.">Skalierung ohne Personalaufbau. Amira übernimmt Routineanfragen und entlastet Ihre Agenten.</p>
+
+        <div class="kpi-list">
+          <div class="kpi-item reveal-d2">
+            <span class="kpi-label" data-de="Kostenreduktion" data-en="Cost Reduction">Kostenreduktion</span>
+            <span class="kpi-value">-45%</span>
+          </div>
+          <div class="kpi-item reveal-d2">
+            <span class="kpi-label" data-de="First Contact Resolution" data-en="FCR Improvement">First Contact Resolution</span>
+            <span class="kpi-value">+80%</span>
+          </div>
+          <div class="kpi-item reveal-d3">
+            <span class="kpi-label" data-de="Wartezeit-Reduktion" data-en="Wait Time Cut">Wartezeit-Reduktion</span>
+            <span class="kpi-value">-70%</span>
+          </div>
+          <div class="kpi-item reveal-d3">
+            <span class="kpi-label" data-de="Agenten-Produktivität" data-en="Agent Productivity">Agenten-Produktivität</span>
+            <span class="kpi-value">+30%</span>
+          </div>
+        </div>
+
+        <ul class="features-list">
+          <li data-de="Peak-Management &amp; Skalierung" data-en="Peak Management &amp; Scaling">Peak-Management &amp; Skalierung</li>
+          <li data-de="Multi-Channel Support" data-en="Multi-Channel Support">Multi-Channel Support</li>
+          <li data-de="Qualitätssicherung &amp; Compliance" data-en="Quality Assurance &amp; Compliance">Qualitätssicherung &amp; Compliance</li>
+          <li data-de="Agent-Assist &amp; Coaching" data-en="Agent Assist &amp; Coaching">Agent-Assist &amp; Coaching</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AUTOMOTIVE SECTION -->
+<section class="industry-section">
+  <div class="container">
+    <div class="industry-grid reveal">
+      <div class="industry-content">
+        <div class="industry-icon">🚗</div>
+        <h2 class="industry-title" data-de="Automotive &amp; Mobilität" data-en="Automotive &amp; Mobility">Automotive &amp; Mobilität</h2>
+        <p class="industry-desc" data-de="Probefahrten, Servicetermine, Finanzierung — intelligent und markenkonform automatisiert." data-en="Test drives, service appointments, financing — intelligently and brand-compliant automated.">Probefahrten, Servicetermine, Finanzierung — intelligent und markenkonform automatisiert.</p>
+
+        <div class="kpi-list">
+          <div class="kpi-item reveal-d1">
+            <span class="kpi-label" data-de="Lead-Qualifizierung" data-en="Lead Qualification">Lead-Qualifizierung</span>
+            <span class="kpi-value">+28%</span>
+          </div>
+          <div class="kpi-item reveal-d1">
+            <span class="kpi-label" data-de="Servicekosten-Reduktion" data-en="Service Cost Reduction">Servicekosten-Reduktion</span>
+            <span class="kpi-value">-50%</span>
+          </div>
+          <div class="kpi-item reveal-d2">
+            <span class="kpi-label" data-de="Terminquote" data-en="Appointment Rate">Terminquote</span>
+            <span class="kpi-value">+35%</span>
+          </div>
+          <div class="kpi-item reveal-d2">
+            <span class="kpi-label" data-de="Verfügbarkeit" data-en="Availability">Verfügbarkeit</span>
+            <span class="kpi-value">24/7</span>
+          </div>
+        </div>
+
+        <ul class="features-list">
+          <li data-de="Probefahrt-Buchung &amp; Planung" data-en="Test Drive Scheduling">Probefahrt-Buchung &amp; Planung</li>
+          <li data-de="Service-Termine &amp; Wartung" data-en="Service Appointments">Service-Termine &amp; Wartung</li>
+          <li data-de="Finanzierungsanfragen" data-en="Financing Inquiries">Finanzierungsanfragen</li>
+          <li data-de="Intelligente Lead-Qualifizierung" data-en="Smart Lead Qualification">Intelligente Lead-Qualifizierung</li>
+        </ul>
+      </div>
+
+      <div class="industry-visual">
+        <div class="dashboard-card reveal-d3">
+          <div class="dashboard-header">
+            <span class="dashboard-title" data-de="Automotive CRM" data-en="Automotive CRM">Automotive CRM</span>
+            <div class="dashboard-metric">🚙</div>
+          </div>
+          <div class="dashboard-stats">
+            <div class="stat-block">
+              <div class="stat-block-value">1.2K</div>
+              <div class="stat-block-label" data-de="Leads/Woche" data-en="Leads/Week">Leads/Woche</div>
+            </div>
+            <div class="stat-block">
+              <div class="stat-block-value">87%</div>
+              <div class="stat-block-label" data-de="Qualifizierte Leads" data-en="Qualified Leads">Qualifizierte Leads</div>
+            </div>
+            <div class="stat-block">
+              <div class="stat-block-value">3h 20m</div>
+              <div class="stat-block-label" data-de="Ø Terminabstand" data-en="Avg Appointment Gap">Ø Terminabstand</div>
+            </div>
+            <div class="stat-block">
+              <div class="stat-block-value">38%</div>
+              <div class="stat-block-label" data-de="Conversion-Steigerung" data-en="Conversion Increase">Conversion-Steigerung</div>
+            </div>
+          </div>
+          <div class="dashboard-chart">
+            <div class="chart-bar">
+              <div class="chart-item"></div>
+              <div class="chart-item"></div>
+              <div class="chart-item"></div>
+              <div class="chart-item"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section" id="cta">
+  <div class="container">
+    <h2 class="cta-title reveal" data-de="Ihre Branche. Unsere Expertise." data-en="Your Industry. Our Expertise.">Ihre Branche. Unsere Expertise.</h2>
+    <p class="cta-desc reveal reveal-d1" data-de="Erleben Sie in einer Demo, wie Amira Ihre Branche transformiert." data-en="Experience how Amira transforms your industry in a demo.">Erleben Sie in einer Demo, wie Amira Ihre Branche transformiert.</p>
+    <div class="cta-actions reveal reveal-d2">
+      <a href="mailto:rainer@ac-group.ai" class="btn-primary" data-de="Demo vereinbaren" data-en="Schedule Demo">Demo vereinbaren <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      <a href="index.html" class="btn-secondary" data-de="Zurück zur Übersicht" data-en="Back to Overview">Zurück zur Übersicht</a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div><div class="footer-brand-name">Amira AI</div><div class="footer-brand-claim">almost human</div><div class="footer-desc" data-de="KI-Automatisierung für Kundenservice und Vertrieb." data-en="AI automation for customer service and sales.">KI-Automatisierung für Kundenservice und Vertrieb.</div></div>
+      <div class="footer-col"><div class="footer-col-title" data-de="Produkte" data-en="Products">Produkte</div><a href="agentic.html">Amira.agentic</a><a href="analyze.html">Amira.analyze</a><a href="assist.html">Amira.assist</a><a href="coach.html">Amira.coach</a></div>
+      <div class="footer-col"><div class="footer-col-title" data-de="Branchen" data-en="Industries">Branchen</div><a href="branchen.html#ecommerce">E-Commerce</a><a href="branchen.html#contact">Contact Center</a><a href="branchen.html#automotive">Automotive</a></div>
+      <div class="footer-col"><div class="footer-col-title" data-de="Unternehmen" data-en="Company">Unternehmen</div><a href="#">Über uns</a><a href="#">Kontakt</a><a href="#">Impressum</a><a href="#">Datenschutz</a></div>
+    </div>
+    <div class="footer-bottom"><span>© 2026 AC Süppmayer GmbH</span><span>Saarbrücken 🇩🇪 · Dubai 🇦🇪</span></div>
+  </div>
+</footer>
+
+<script>
+let currentLang = 'de';
+function toggleLang() {
+  currentLang = currentLang === 'de' ? 'en' : 'de';
+  document.getElementById('langSwitch').textContent = currentLang === 'de' ? 'EN' : 'DE';
+  document.querySelectorAll('[data-de]').forEach(el => { const t = el.getAttribute('data-' + currentLang); if (t) el.textContent = t; });
+  document.documentElement.lang = currentLang;
+}
+const obs = new IntersectionObserver(e => { e.forEach(x => { if (x.isIntersecting) x.target.classList.add('visible'); }); }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+window.addEventListener('scroll', () => { document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 80); }, { passive: true });
+</script>
+</body>
+</html>
