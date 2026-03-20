@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amira.agentic — Vollautonomer KI-Agent</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Nunito:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #FCFAFD; --bg-dark: #08001a; --action1: #FF11BB; --action2: #2DC8B0;
+  --accent: #5A189A; --primary: #3C0CA5; --secondary: #0A006A; --text: #121212;
+  --text-muted: #64607a; --border-light: rgba(90,24,154,0.06);
+  --font: 'Inter', 'Nunito', 'Poppins', sans-serif;
+  --radius-sm: 12px; --radius-md: 20px; --radius-lg: 30px; --radius-pill: 100px;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1); --ease-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --shadow-sm: 0 2px 8px rgba(10,0,106,0.04); --shadow-md: 0 8px 30px rgba(10,0,106,0.06);
+  --shadow-lg: 0 20px 60px rgba(10,0,106,0.08); --shadow-xl: 0 40px 100px rgba(10,0,106,0.12);
+  --section-pad: clamp(80px, 10vw, 140px);
+  --module-color: #FF11BB;
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--font); color: var(--text); background: var(--bg); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+a { text-decoration: none; color: inherit; }
+.container { max-width: 1240px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 48px); }
+
+/* NAV */
+.nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 16px 0; transition: all 0.4s var(--ease-smooth); }
+.nav.scrolled { background: rgba(252,250,253,0.92); backdrop-filter: blur(20px) saturate(1.8); border-bottom: 1px solid var(--border-light); padding: 10px 0; }
+.nav-inner { max-width: 1240px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 48px); display: flex; align-items: center; justify-content: space-between; }
+.nav-brand { display: flex; align-items: center; gap: 12px; color: var(--secondary); font-weight: 800; font-size: 22px; letter-spacing: -0.5px; }
+.nav-logo { width: 36px; height: 36px; background: linear-gradient(135deg, var(--action1), var(--accent), var(--primary)); border-radius: 10px; position: relative; box-shadow: 0 4px 16px rgba(255,17,187,0.2); }
+.nav-logo::after { content: ''; position: absolute; inset: 3px; background: rgba(255,255,255,0.15); border-radius: 7px; clip-path: polygon(50% 5%, 75% 20%, 95% 50%, 75% 80%, 50% 95%, 25% 80%, 5% 50%, 25% 20%); }
+.nav-links { display: flex; align-items: center; gap: 4px; list-style: none; }
+.nav-link { font-size: 14px; font-weight: 500; color: var(--text-muted); padding: 8px 18px; border-radius: var(--radius-pill); transition: all 0.25s; }
+.nav-link:hover { color: var(--secondary); background: rgba(90,24,154,0.04); }
+.nav-link.active { color: var(--module-color); font-weight: 600; }
+.nav-cta-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 26px; background: var(--secondary); color: #fff !important; font-size: 14px; font-weight: 600; border-radius: var(--radius-pill); transition: all 0.3s var(--ease); box-shadow: 0 2px 12px rgba(10,0,106,0.15); }
+.nav-cta-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(10,0,106,0.2); }
+.lang-toggle { font-size: 13px; font-weight: 600; color: var(--text-muted); background: rgba(90,24,154,0.04); border: 1px solid var(--border-light); padding: 6px 14px; border-radius: var(--radius-pill); cursor: pointer; transition: all 0.2s; }
+.nav-mobile { display: none; cursor: pointer; background: none; border: none; padding: 8px; }
+.nav-mobile span { display: block; width: 22px; height: 2px; background: var(--secondary); margin: 5px 0; border-radius: 2px; }
+
+/* HERO */
+.hero { min-height: 90vh; padding: 160px 0 100px; display: flex; align-items: center; background: linear-gradient(175deg, #fff0f8 0%, var(--bg) 30%, #f8f0ff 60%, #f5eeff 100%); position: relative; overflow: hidden; }
+.hero-orb { position: absolute; border-radius: 50%; filter: blur(100px); pointer-events: none; }
+.hero-orb-1 { width: 500px; height: 500px; background: radial-gradient(circle, rgba(255,17,187,0.07) 0%, transparent 70%); top: -100px; right: -100px; }
+.hero-orb-2 { width: 400px; height: 400px; background: radial-gradient(circle, rgba(90,24,154,0.05) 0%, transparent 70%); bottom: -50px; left: -50px; }
+.hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(40px, 6vw, 80px); align-items: center; }
+.hero-content { position: relative; z-index: 2; }
+.hero-badge { display: inline-flex; align-items: center; gap: 10px; padding: 6px 6px 6px 8px; background: #fff; border: 1px solid var(--border-light); border-radius: var(--radius-pill); font-size: 13px; font-weight: 600; color: var(--text-muted); margin-bottom: 32px; box-shadow: var(--shadow-sm); }
+.hero-badge-tag { background: var(--module-color); color: #fff; padding: 4px 12px; border-radius: var(--radius-pill); font-size: 11px; font-weight: 700; }
+.hero h1 { font-size: clamp(38px, 5vw, 58px); font-weight: 800; line-height: 1.08; letter-spacing: -2px; color: var(--secondary); margin-bottom: 24px; }
+.hero h1 .highlight { background: linear-gradient(135deg, var(--module-color), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.hero-desc { font-size: clamp(16px, 1.4vw, 18px); line-height: 1.7; color: var(--text-muted); max-width: 480px; margin-bottom: 40px; }
+.hero-actions { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+.btn-primary { display: inline-flex; align-items: center; gap: 10px; padding: 16px 36px; background: var(--secondary); color: #fff; border: none; border-radius: var(--radius-pill); font-size: 16px; font-weight: 600; font-family: var(--font); cursor: pointer; transition: all 0.35s var(--ease); box-shadow: 0 4px 20px rgba(10,0,106,0.2); }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 36px rgba(10,0,106,0.25); }
+.btn-secondary { display: inline-flex; align-items: center; gap: 10px; padding: 16px 36px; background: #fff; color: var(--secondary); border: 1px solid rgba(90,24,154,0.12); border-radius: var(--radius-pill); font-size: 16px; font-weight: 600; font-family: var(--font); cursor: pointer; transition: all 0.35s var(--ease); box-shadow: var(--shadow-sm); }
+.btn-secondary:hover { background: #f8f4ff; transform: translateY(-2px); box-shadow: var(--shadow-md); }
+
+/* Hero chat demo */
+.hero-visual { position: relative; z-index: 2; }
+.hero-mockup { background: var(--bg-dark); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid rgba(255,255,255,0.06); box-shadow: var(--shadow-xl); }
+.mockup-toolbar { display: flex; align-items: center; gap: 8px; padding: 14px 20px; background: rgba(255,255,255,0.03); border-bottom: 1px solid rgba(255,255,255,0.06); }
+.mockup-dot { width: 10px; height: 10px; border-radius: 50%; }
+.dot-r { background: #ff5f57; } .dot-y { background: #febc2e; } .dot-g { background: #28c840; }
+.mockup-url { flex: 1; margin-left: 12px; background: rgba(255,255,255,0.05); border-radius: 8px; padding: 6px 14px; font-size: 12px; color: rgba(255,255,255,0.3); font-family: monospace; }
+.mockup-body { padding: 24px; min-height: 360px; background: linear-gradient(180deg, rgba(10,0,26,1), rgba(20,0,50,1)); }
+.chat-msg { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 16px; opacity: 0; animation: chatIn 0.5s var(--ease) forwards; }
+.chat-msg:nth-child(1) { animation-delay: 0.3s; } .chat-msg:nth-child(2) { animation-delay: 0.9s; }
+.chat-msg:nth-child(3) { animation-delay: 1.5s; } .chat-msg:nth-child(4) { animation-delay: 2.1s; }
+@keyframes chatIn { to { opacity: 1; transform: translateY(0); } from { opacity: 0; transform: translateY(10px); } }
+.chat-avatar { width: 32px; height: 32px; border-radius: 10px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; color: #fff; }
+.chat-avatar.ai { background: linear-gradient(135deg, var(--module-color), var(--accent)); }
+.chat-avatar.user { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.08); color: rgba(255,255,255,0.5); }
+.chat-bubble { padding: 14px 18px; border-radius: 16px; font-size: 14px; line-height: 1.5; max-width: 85%; }
+.chat-bubble.ai-b { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.06); color: rgba(255,255,255,0.85); }
+.chat-bubble.user-b { background: linear-gradient(135deg, rgba(60,12,165,0.4), rgba(90,24,154,0.3)); border: 1px solid rgba(90,24,154,0.3); color: rgba(255,255,255,0.9); margin-left: auto; }
+.chat-metrics { display: flex; gap: 16px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.04); margin-top: 8px; }
+.chat-metric { font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.3); }
+.chat-metric .val { color: var(--action2); font-weight: 700; }
+
+/* STATS BAND */
+.stats-band { padding: 64px 0; background: #fff; border-top: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light); }
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); }
+.stat-item { text-align: center; padding: 32px 16px; position: relative; }
+.stat-item::after { content: ''; position: absolute; top: 20%; right: 0; height: 60%; width: 1px; background: linear-gradient(to bottom, transparent, var(--border-light), transparent); }
+.stat-item:last-child::after { display: none; }
+.stat-val { font-size: clamp(36px, 4.5vw, 56px); font-weight: 800; letter-spacing: -2px; line-height: 1; margin-bottom: 8px; background: linear-gradient(135deg, var(--module-color), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.stat-label { font-size: 14px; color: var(--text-muted); font-weight: 500; }
+@media (max-width: 768px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } .stat-item:nth-child(2)::after { display: none; } }
+
+/* SECTION HEADERS */
+.section-header { text-align: center; max-width: 680px; margin: 0 auto clamp(48px, 6vw, 80px); }
+.section-eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--module-color); margin-bottom: 20px; }
+.section-eyebrow-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--module-color); }
+.section-title { font-size: clamp(32px, 4.5vw, 52px); font-weight: 800; line-height: 1.1; letter-spacing: -1.5px; color: var(--secondary); margin-bottom: 20px; }
+.section-desc { font-size: clamp(16px, 1.3vw, 18px); line-height: 1.7; color: var(--text-muted); }
+
+/* FEATURES */
+.features { padding: var(--section-pad) 0; }
+.features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.feature-card { background: #fff; border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: clamp(32px, 3vw, 44px); transition: all 0.4s var(--ease); position: relative; overflow: hidden; }
+.feature-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--module-color), var(--accent)); transform: scaleX(0); transform-origin: left; transition: transform 0.4s var(--ease); }
+.feature-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: transparent; }
+.feature-card:hover::before { transform: scaleX(1); }
+.feature-icon { width: 52px; height: 52px; border-radius: 14px; background: linear-gradient(135deg, rgba(255,17,187,0.06), rgba(90,24,154,0.06)); border: 1px solid var(--border-light); display: flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 24px; }
+.feature-title { font-size: 19px; font-weight: 700; color: var(--secondary); margin-bottom: 10px; letter-spacing: -0.3px; }
+.feature-desc { font-size: 15px; color: var(--text-muted); line-height: 1.6; }
+@media (max-width: 900px) { .features-grid { grid-template-columns: 1fr; } }
+
+/* USE CASES */
+.use-cases { padding: var(--section-pad) 0; background: linear-gradient(180deg, #f8f4ff, var(--bg)); }
+.uc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.uc-card { background: #fff; border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: clamp(32px, 3vw, 48px); transition: all 0.4s var(--ease); }
+.uc-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+.uc-number { font-size: 48px; font-weight: 800; letter-spacing: -2px; background: linear-gradient(135deg, var(--module-color), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 16px; line-height: 1; }
+.uc-title { font-size: 22px; font-weight: 700; color: var(--secondary); margin-bottom: 12px; }
+.uc-desc { font-size: 15px; color: var(--text-muted); line-height: 1.6; }
+@media (max-width: 768px) { .uc-grid { grid-template-columns: 1fr; } }
+
+/* FAQ */
+.faq { padding: var(--section-pad) 0; }
+.faq-list { max-width: 780px; margin: 0 auto; }
+.faq-item { border-bottom: 1px solid var(--border-light); }
+.faq-q { display: flex; justify-content: space-between; align-items: center; padding: 28px 0; cursor: pointer; font-size: 18px; font-weight: 600; color: var(--secondary); transition: color 0.2s; }
+.faq-q:hover { color: var(--module-color); }
+.faq-q svg { transition: transform 0.3s; flex-shrink: 0; margin-left: 16px; }
+.faq-item.open .faq-q svg { transform: rotate(45deg); }
+.faq-a { max-height: 0; overflow: hidden; transition: max-height 0.4s var(--ease-smooth); }
+.faq-a-inner { padding: 0 0 28px; font-size: 15px; color: var(--text-muted); line-height: 1.7; }
+.faq-item.open .faq-a { max-height: 300px; }
+
+/* CTA */
+.cta-section { padding: var(--section-pad) 0; text-align: center; position: relative; overflow: hidden; }
+.cta-section::before { content: ''; position: absolute; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(255,17,187,0.06), transparent 60%); top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; }
+.cta-title { font-size: clamp(32px, 4.5vw, 52px); font-weight: 800; letter-spacing: -1.5px; line-height: 1.1; color: var(--secondary); margin-bottom: 20px; }
+.cta-desc { font-size: clamp(16px, 1.3vw, 18px); color: var(--text-muted); line-height: 1.7; max-width: 520px; margin: 0 auto 40px; }
+.cta-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+/* FOOTER */
+.footer { padding: 80px 0 40px; border-top: 1px solid var(--border-light); }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+.footer-brand-name { font-size: 22px; font-weight: 800; color: var(--secondary); margin-bottom: 12px; }
+.footer-brand-claim { font-size: 14px; color: var(--text-muted); font-style: italic; margin-bottom: 16px; }
+.footer-desc { font-size: 14px; color: var(--text-muted); line-height: 1.7; max-width: 300px; }
+.footer-col-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--secondary); margin-bottom: 20px; }
+.footer-col a { display: block; font-size: 14px; color: var(--text-muted); padding: 5px 0; transition: color 0.2s; font-weight: 500; }
+.footer-col a:hover { color: var(--primary); }
+.footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 32px; border-top: 1px solid var(--border-light); font-size: 13px; color: var(--text-muted); flex-wrap: wrap; gap: 16px; }
+@media (max-width: 768px) { .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; } }
+@media (max-width: 500px) { .footer-grid { grid-template-columns: 1fr; } }
+
+/* ANIMATIONS */
+.reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s var(--ease-smooth), transform 0.8s var(--ease-smooth); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-d1 { transition-delay: 0.1s; } .reveal-d2 { transition-delay: 0.2s; } .reveal-d3 { transition-delay: 0.3s; }
+@media (max-width: 960px) { .nav-links { display: none; } .nav-mobile { display: flex; flex-direction: column; } .hero-grid { grid-template-columns: 1fr; } .hero-visual { order: -1; } }
+</style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand"><div class="nav-logo"></div><span>Amira</span></a>
+    <ul class="nav-links">
+      <li><a href="agentic.html" class="nav-link active">Amira.agentic</a></li>
+      <li><a href="analyze.html" class="nav-link">Amira.analyze</a></li>
+      <li><a href="assist.html" class="nav-link">Amira.assist</a></li>
+      <li><a href="coach.html" class="nav-link">Amira.coach</a></li>
+      <li><a href="branchen.html" class="nav-link" data-de="Branchen" data-en="Industries">Branchen</a></li>
+      <li><span class="lang-toggle" id="langSwitch" onclick="toggleLang()">EN</span></li>
+      <li><a href="#cta" class="nav-cta-btn" data-de="Demo buchen" data-en="Book Demo">Demo buchen</a></li>
+    </ul>
+    <button class="nav-mobile" onclick="document.querySelector('.nav-links').classList.toggle('show')"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-orb hero-orb-1"></div><div class="hero-orb hero-orb-2"></div>
+  <div class="container">
+    <div class="hero-grid">
+      <div class="hero-content">
+        <div class="hero-badge"><span class="hero-badge-tag">AGENTIC</span><span data-de="Vollautonomer KI-Agent" data-en="Fully Autonomous AI Agent">Vollautonomer KI-Agent</span></div>
+        <h1><span data-de="Kundenservice" data-en="Customer service">Kundenservice</span><br><span class="highlight" data-de="ohne Grenzen." data-en="without limits.">ohne Grenzen.</span><br><span data-de="Rund um die Uhr." data-en="Around the clock.">Rund um die Uhr.</span></h1>
+        <p class="hero-desc" data-de="Amira.agentic übernimmt komplette Kundeninteraktionen autonom — von der ersten Anfrage bis zur finalen Lösung. In über 120 Sprachen, 24/7." data-en="Amira.agentic handles complete customer interactions autonomously — from the first inquiry to the final resolution. In 120+ languages, 24/7.">Amira.agentic übernimmt komplette Kundeninteraktionen autonom — von der ersten Anfrage bis zur finalen Lösung. In über 120 Sprachen, 24/7.</p>
+        <div class="hero-actions">
+          <a href="#cta" class="btn-primary" data-de="Demo buchen" data-en="Book a Demo">Demo buchen <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          <a href="#features" class="btn-secondary" data-de="Features entdecken" data-en="Explore Features">Features entdecken</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-mockup">
+          <div class="mockup-toolbar"><div class="mockup-dot dot-r"></div><div class="mockup-dot dot-y"></div><div class="mockup-dot dot-g"></div><div class="mockup-url">amira-ai.de/agentic</div></div>
+          <div class="mockup-body">
+            <div class="chat-msg"><div class="chat-avatar user">K</div><div class="chat-bubble user-b" data-de="Meine Lieferung ist seit 3 Tagen überfällig. Bestellung #78432" data-en="My delivery is 3 days overdue. Order #78432">Meine Lieferung ist seit 3 Tagen überfällig. Bestellung #78432</div></div>
+            <div class="chat-msg"><div class="chat-avatar ai">A</div><div class="chat-bubble ai-b" data-de="Ich prüfe Ihre Bestellung sofort. #78432: Paket (2 Artikel, 124,50 €) — im Depot Frankfurt. Verzögerung durch hohes Aufkommen. Zustellung: morgen bis 14 Uhr." data-en="Checking your order now. #78432: Package (2 items, €124.50) — at Frankfurt depot. Delay due to high volume. Delivery: tomorrow by 2 PM.">Ich prüfe Ihre Bestellung sofort. #78432: Paket (2 Artikel, 124,50 €) — im Depot Frankfurt. Verzögerung durch hohes Aufkommen. Zustellung: morgen bis 14 Uhr.</div></div>
+            <div class="chat-msg"><div class="chat-avatar user">K</div><div class="chat-bubble user-b" data-de="Kann ich eine Entschädigung bekommen?" data-en="Can I get compensation?">Kann ich eine Entschädigung bekommen?</div></div>
+            <div class="chat-msg"><div class="chat-avatar ai">A</div><div class="chat-bubble ai-b" data-de="Selbstverständlich! ✓ 10%-Gutschein aktiviert (Code: SORRY10, 30 Tage gültig). Bestätigung per E-Mail folgt." data-en="Of course! ✓ 10% voucher activated (Code: SORRY10, valid 30 days). Confirmation email follows.">Selbstverständlich! ✓ 10%-Gutschein aktiviert (Code: SORRY10, 30 Tage gültig). Bestätigung per E-Mail folgt.</div></div>
+            <div class="chat-metrics">
+              <div class="chat-metric" data-de="Lösungszeit:" data-en="Resolution:">Lösungszeit: <span class="val">42s</span></div>
+              <div class="chat-metric">CSAT: <span class="val">98%</span></div>
+              <div class="chat-metric" data-de="Eskalation:" data-en="Escalation:">Eskalation: <span class="val">0</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="stats-band">
+  <div class="container"><div class="stats-grid">
+    <div class="stat-item reveal"><div class="stat-val">24/7</div><div class="stat-label" data-de="Verfügbarkeit" data-en="Availability">Verfügbarkeit</div></div>
+    <div class="stat-item reveal reveal-d1"><div class="stat-val">0.8s</div><div class="stat-label" data-de="Ø Antwortzeit" data-en="Avg Response Time">Ø Antwortzeit</div></div>
+    <div class="stat-item reveal reveal-d2"><div class="stat-val">120+</div><div class="stat-label" data-de="Sprachen" data-en="Languages">Sprachen</div></div>
+    <div class="stat-item reveal reveal-d3"><div class="stat-val">94%</div><div class="stat-label" data-de="Lösungsrate" data-en="Resolution Rate">Lösungsrate</div></div>
+  </div></div>
+</section>
+
+<section class="features" id="features">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-eyebrow"><span class="section-eyebrow-dot"></span> Features</div>
+      <h2 class="section-title" data-de="Alles, was ein KI-Agent braucht" data-en="Everything an AI Agent Needs">Alles, was ein KI-Agent braucht</h2>
+      <p class="section-desc" data-de="Amira.agentic kombiniert modernste KI mit tiefem Branchenverständnis." data-en="Amira.agentic combines cutting-edge AI with deep industry understanding.">Amira.agentic kombiniert modernste KI mit tiefem Branchenverständnis.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card reveal"><div class="feature-icon">🧠</div><div class="feature-title" data-de="Kontextuelles Verständnis" data-en="Contextual Understanding">Kontextuelles Verständnis</div><div class="feature-desc" data-de="Versteht Absicht, Emotion und Kontext — nicht nur Keywords." data-en="Understands intent, emotion, and context — not just keywords.">Versteht Absicht, Emotion und Kontext — nicht nur Keywords.</div></div>
+      <div class="feature-card reveal reveal-d1"><div class="feature-icon">⚡</div><div class="feature-title" data-de="Autonome Aktionen" data-en="Autonomous Actions">Autonome Aktionen</div><div class="feature-desc" data-de="Stornierungen, Rückerstattungen, Terminbuchungen — Amira handelt selbstständig." data-en="Cancellations, refunds, appointments — Amira acts independently.">Stornierungen, Rückerstattungen, Terminbuchungen — Amira handelt selbstständig.</div></div>
+      <div class="feature-card reveal reveal-d2"><div class="feature-icon">🌍</div><div class="feature-title" data-de="120+ Sprachen" data-en="120+ Languages">120+ Sprachen</div><div class="feature-desc" data-de="Nahtlose multilinguale Kommunikation mit natürlicher Sprachqualität." data-en="Seamless multilingual communication with natural language quality.">Nahtlose multilinguale Kommunikation mit natürlicher Sprachqualität.</div></div>
+      <div class="feature-card reveal"><div class="feature-icon">📞</div><div class="feature-title" data-de="Omnichannel" data-en="Omnichannel">Omnichannel</div><div class="feature-desc" data-de="Chat, Telefon, E-Mail, WhatsApp, Social Media — ein Agent für alle Kanäle." data-en="Chat, phone, email, WhatsApp, social media — one agent for all channels.">Chat, Telefon, E-Mail, WhatsApp, Social Media — ein Agent für alle Kanäle.</div></div>
+      <div class="feature-card reveal reveal-d1"><div class="feature-icon">🔗</div><div class="feature-title" data-de="System-Integration" data-en="System Integration">System-Integration</div><div class="feature-desc" data-de="Nahtlose Anbindung an CRM, ERP, Ticketing und Shop-Systeme." data-en="Seamless connection to CRM, ERP, ticketing, and shop systems.">Nahtlose Anbindung an CRM, ERP, Ticketing und Shop-Systeme.</div></div>
+      <div class="feature-card reveal reveal-d2"><div class="feature-icon">📈</div><div class="feature-title" data-de="Intelligente Eskalation" data-en="Smart Escalation">Intelligente Eskalation</div><div class="feature-desc" data-de="Erkennt komplexe Fälle und übergibt nahtlos an menschliche Agenten." data-en="Detects complex cases and seamlessly hands over to human agents.">Erkennt komplexe Fälle und übergibt nahtlos an menschliche Agenten.</div></div>
+      <div class="feature-card reveal"><div class="feature-icon">🎯</div><div class="feature-title" data-de="Personalisierung" data-en="Personalization">Personalisierung</div><div class="feature-desc" data-de="Kennt Kundenhistorie und passt Antworten individuell an." data-en="Knows customer history and tailors responses individually.">Kennt Kundenhistorie und passt Antworten individuell an.</div></div>
+      <div class="feature-card reveal reveal-d1"><div class="feature-icon">🔒</div><div class="feature-title" data-de="Enterprise Security" data-en="Enterprise Security">Enterprise Security</div><div class="feature-desc" data-de="DSGVO-konform, Ende-zu-Ende verschlüsselt, SOC 2 zertifiziert." data-en="GDPR compliant, end-to-end encrypted, SOC 2 certified.">DSGVO-konform, Ende-zu-Ende verschlüsselt, SOC 2 zertifiziert.</div></div>
+      <div class="feature-card reveal reveal-d2"><div class="feature-icon">💡</div><div class="feature-title" data-de="Selbstlernend" data-en="Self-Learning">Selbstlernend</div><div class="feature-desc" data-de="Wird mit jeder Interaktion besser — kontinuierliche Optimierung." data-en="Improves with every interaction — continuous optimization.">Wird mit jeder Interaktion besser — kontinuierliche Optimierung.</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="use-cases">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-eyebrow"><span class="section-eyebrow-dot"></span> Use Cases</div>
+      <h2 class="section-title" data-de="Einsatzbereiche" data-en="Applications">Einsatzbereiche</h2>
+    </div>
+    <div class="uc-grid">
+      <div class="uc-card reveal"><div class="uc-number">01</div><div class="uc-title" data-de="Inbound-Kundenservice" data-en="Inbound Service">Inbound-Kundenservice</div><div class="uc-desc" data-de="Bestellstatus, Retouren, Reklamationen, Produktanfragen — vollautomatisch bearbeitet." data-en="Order status, returns, complaints, product inquiries — fully automated.">Bestellstatus, Retouren, Reklamationen, Produktanfragen — vollautomatisch bearbeitet.</div></div>
+      <div class="uc-card reveal reveal-d1"><div class="uc-number">02</div><div class="uc-title" data-de="Outbound-Vertrieb" data-en="Outbound Sales">Outbound-Vertrieb</div><div class="uc-desc" data-de="Lead-Qualifizierung, Terminvereinbarung und Follow-ups — proaktiv und personalisiert." data-en="Lead qualification, scheduling, and follow-ups — proactive and personalized.">Lead-Qualifizierung, Terminvereinbarung und Follow-ups — proaktiv und personalisiert.</div></div>
+      <div class="uc-card reveal reveal-d2"><div class="uc-number">03</div><div class="uc-title" data-de="After-Sales Support" data-en="After-Sales Support">After-Sales Support</div><div class="uc-desc" data-de="Garantieanfragen, Wartungstermine und Feedback-Einholung — automatisch und zuverlässig." data-en="Warranty, maintenance scheduling, and feedback — automatic and reliable.">Garantieanfragen, Wartungstermine und Feedback-Einholung — automatisch und zuverlässig.</div></div>
+      <div class="uc-card reveal reveal-d3"><div class="uc-number">04</div><div class="uc-title" data-de="Peak-Management" data-en="Peak Management">Peak-Management</div><div class="uc-desc" data-de="Black Friday, Weihnachten, Produktlaunches — skaliert sofort ohne zusätzliches Personal." data-en="Black Friday, Christmas, launches — scales instantly without extra staff.">Black Friday, Weihnachten, Produktlaunches — skaliert sofort ohne zusätzliches Personal.</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="faq">
+  <div class="container">
+    <div class="section-header"><div class="section-eyebrow"><span class="section-eyebrow-dot"></span> FAQ</div><h2 class="section-title" data-de="Häufig gestellte Fragen" data-en="Frequently Asked Questions">Häufig gestellte Fragen</h2></div>
+    <div class="faq-list">
+      <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')" data-de="Wie schnell kann Amira.agentic implementiert werden?" data-en="How quickly can Amira.agentic be implemented?">Wie schnell kann Amira.agentic implementiert werden? <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div><div class="faq-a"><div class="faq-a-inner" data-de="2–4 Wochen Basisimplementierung. Dank vorgefertigter Branchenlösungen kann der erste Pilot oft schon nach wenigen Tagen live gehen." data-en="2-4 weeks base implementation. Thanks to pre-built industry solutions, the first pilot can often go live within days.">2–4 Wochen Basisimplementierung. Dank vorgefertigter Branchenlösungen kann der erste Pilot oft schon nach wenigen Tagen live gehen.</div></div></div>
+      <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')" data-de="Welche Systeme werden unterstützt?" data-en="Which systems are supported?">Welche Systeme werden unterstützt? <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div><div class="faq-a"><div class="faq-a-inner" data-de="Salesforce, SAP, Zendesk, Shopify, HubSpot, Microsoft Teams und viele weitere über REST-API und Webhooks." data-en="Salesforce, SAP, Zendesk, Shopify, HubSpot, Microsoft Teams, and many more via REST API and webhooks.">Salesforce, SAP, Zendesk, Shopify, HubSpot, Microsoft Teams und viele weitere über REST-API und Webhooks.</div></div></div>
+      <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')" data-de="Wie werden sensible Kundendaten geschützt?" data-en="How is sensitive customer data protected?">Wie werden sensible Kundendaten geschützt? <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div><div class="faq-a"><div class="faq-a-inner" data-de="Hosting in Deutschland/EU, Ende-zu-Ende verschlüsselt, DSGVO, SOC 2 und ISO 27001. Ihre Daten verlassen niemals Europa." data-en="Hosted in Germany/EU, end-to-end encrypted, GDPR, SOC 2, and ISO 27001. Your data never leaves Europe.">Hosting in Deutschland/EU, Ende-zu-Ende verschlüsselt, DSGVO, SOC 2 und ISO 27001. Ihre Daten verlassen niemals Europa.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section" id="cta">
+  <div class="container">
+    <h2 class="cta-title reveal" data-de="Bereit für autonomen Kundenservice?" data-en="Ready for Autonomous Service?">Bereit für autonomen Kundenservice?</h2>
+    <p class="cta-desc reveal reveal-d1" data-de="Erleben Sie in einer Demo, wie Amira.agentic Ihre Kundeninteraktionen transformiert." data-en="Experience how Amira.agentic transforms your customer interactions.">Erleben Sie in einer Demo, wie Amira.agentic Ihre Kundeninteraktionen transformiert.</p>
+    <div class="cta-actions reveal reveal-d2">
+      <a href="mailto:rainer@ac-group.ai" class="btn-primary" data-de="Demo vereinbaren" data-en="Schedule Demo">Demo vereinbaren <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      <a href="index.html" class="btn-secondary" data-de="Zurück zur Übersicht" data-en="Back to Overview">Zurück zur Übersicht</a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div><div class="footer-brand-name">Amira AI</div><div class="footer-brand-claim">almost human</div><div class="footer-desc" data-de="KI-Automatisierung für Kundenservice und Vertrieb." data-en="AI automation for customer service and sales.">KI-Automatisierung für Kundenservice und Vertrieb.</div></div>
+      <div class="footer-col"><div class="footer-col-title" data-de="Produkte" data-en="Products">Produkte</div><a href="agentic.html">Amira.agentic</a><a href="analyze.html">Amira.analyze</a><a href="assist.html">Amira.assist</a><a href="coach.html">Amira.coach</a></div>
+      <div class="footer-col"><div class="footer-col-title" data-de="Branchen" data-en="Industries">Branchen</div><a href="branchen.html">E-Commerce</a><a href="branchen.html">Contact Center</a><a href="branchen.html">Automotive</a></div>
+      <div class="footer-col"><div class="footer-col-title" data-de="Unternehmen" data-en="Company">Unternehmen</div><a href="#">Über uns</a><a href="#">Kontakt</a><a href="#">Impressum</a><a href="#">Datenschutz</a></div>
+    </div>
+    <div class="footer-bottom"><span>© 2026 AC Süppmayer GmbH</span><span>Saarbrücken 🇩🇪 · Dubai 🇦🇪</span></div>
+  </div>
+</footer>
+
+<script>
+let currentLang = 'de';
+function toggleLang() {
+  currentLang = currentLang === 'de' ? 'en' : 'de';
+  document.getElementById('langSwitch').textContent = currentLang === 'de' ? 'EN' : 'DE';
+  document.querySelectorAll('[data-de]').forEach(el => { const t = el.getAttribute('data-' + currentLang); if (t) el.textContent = t; });
+  document.documentElement.lang = currentLang;
+}
+const obs = new IntersectionObserver(e => { e.forEach(x => { if (x.isIntersecting) x.target.classList.add('visible'); }); }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+window.addEventListener('scroll', () => { document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 80); }, { passive: true });
+</script>
+</body>
+</html>
