@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amira.coach — KI-gestütztes Training</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Nunito:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #FCFAFD; --bg-dark: #08001a; --action1: #C77DFF; --action2: #2DC8B0;
+  --accent: #5A189A; --primary: #3C0CA5; --secondary: #0A006A; --text: #121212;
+  --text-muted: #64607a; --border-light: rgba(90,24,154,0.06);
+  --font: 'Inter', 'Nunito', 'Poppins', sans-serif;
+  --radius-sm: 12px; --radius-md: 20px; --radius-lg: 30px; --radius-pill: 100px;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1); --ease-smooth: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --shadow-sm: 0 2px 8px rgba(10,0,106,0.04); --shadow-md: 0 8px 30px rgba(10,0,106,0.06);
+  --shadow-lg: 0 20px 60px rgba(10,0,106,0.08); --shadow-xl: 0 40px 100px rgba(10,0,106,0.12);
+  --section-pad: clamp(80px, 10vw, 140px);
+  --module-color: #C77DFF;
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--font); color: var(--text); background: var(--bg); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
+a { text-decoration: none; color: inherit; }
+.container { max-width: 1240px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 48px); }
+
+/* NAV */
+.nav { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; padding: 16px 0; transition: all 0.4s var(--ease-smooth); }
+.nav.scrolled { background: rgba(252,250,253,0.92); backdrop-filter: blur(20px) saturate(1.8); border-bottom: 1px solid var(--border-light); padding: 10px 0; }
+.nav-inner { max-width: 1240px; margin: 0 auto; padding: 0 clamp(20px, 4vw, 48px); display: flex; align-items: center; justify-content: space-between; }
+.nav-brand { display: flex; align-items: center; gap: 12px; color: var(--secondary); font-weight: 800; font-size: 22px; letter-spacing: -0.5px; }
+.nav-logo { width: 36px; height: 36px; background: linear-gradient(135deg, #C77DFF, #5A189A, #3C0CA5); border-radius: 10px; position: relative; box-shadow: 0 4px 16px rgba(199,125,255,0.2); }
+.nav-logo::after { content: ''; position: absolute; inset: 3px; background: rgba(255,255,255,0.15); border-radius: 7px; clip-path: polygon(50% 5%, 75% 20%, 95% 50%, 75% 80%, 50% 95%, 25% 80%, 5% 50%, 25% 20%); }
+.nav-links { display: flex; align-items: center; gap: 4px; list-style: none; }
+.nav-link { font-size: 14px; font-weight: 500; color: var(--text-muted); padding: 8px 18px; border-radius: var(--radius-pill); transition: all 0.25s; }
+.nav-link:hover { color: var(--secondary); background: rgba(90,24,154,0.04); }
+.nav-link.active { color: var(--module-color); font-weight: 600; }
+.nav-cta-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 26px; background: var(--secondary); color: #fff !important; font-size: 14px; font-weight: 600; border-radius: var(--radius-pill); transition: all 0.3s var(--ease); box-shadow: 0 2px 12px rgba(10,0,106,0.15); }
+.nav-cta-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(10,0,106,0.2); }
+.lang-toggle { font-size: 13px; font-weight: 600; color: var(--text-muted); background: rgba(90,24,154,0.04); border: 1px solid var(--border-light); padding: 6px 14px; border-radius: var(--radius-pill); cursor: pointer; transition: all 0.2s; }
+.nav-mobile { display: none; cursor: pointer; background: none; border: none; padding: 8px; }
+.nav-mobile span { display: block; width: 22px; height: 2px; background: var(--secondary); margin: 5px 0; border-radius: 2px; }
+
+/* HERO */
+.hero { min-height: 90vh; padding: 160px 0 100px; display: flex; align-items: center; background: linear-gradient(175deg, #f5e6ff 0%, var(--bg) 30%, #f0e0ff 60%, #ebe0ff 100%); position: relative; overflow: hidden; }
+.hero-orb { position: absolute; border-radius: 50%; filter: blur(100px); pointer-events: none; }
+.hero-orb-1 { width: 500px; height: 500px; background: radial-gradient(circle, rgba(199,125,255,0.07) 0%, transparent 70%); top: -100px; right: -100px; }
+.hero-orb-2 { width: 400px; height: 400px; background: radial-gradient(circle, rgba(90,24,154,0.05) 0%, transparent 70%); bottom: -50px; left: -50px; }
+.hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(40px, 6vw, 80px); align-items: center; }
+.hero-content { position: relative; z-index: 2; }
+.hero-badge { display: inline-flex; align-items: center; gap: 10px; padding: 6px 6px 6px 8px; background: #fff; border: 1px solid var(--border-light); border-radius: var(--radius-pill); font-size: 13px; font-weight: 600; color: var(--text-muted); margin-bottom: 32px; box-shadow: var(--shadow-sm); }
+.hero-badge-tag { background: var(--module-color); color: #fff; padding: 4px 12px; border-radius: var(--radius-pill); font-size: 11px; font-weight: 700; }
+.hero h1 { font-size: clamp(38px, 5vw, 58px); font-weight: 800; line-height: 1.08; letter-spacing: -2px; color: var(--secondary); margin-bottom: 24px; }
+.hero h1 .highlight { background: linear-gradient(135deg, var(--module-color), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.hero-desc { font-size: clamp(16px, 1.4vw, 18px); line-height: 1.7; color: var(--text-muted); max-width: 480px; margin-bottom: 40px; }
+.hero-actions { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+.btn-primary { display: inline-flex; align-items: center; gap: 10px; padding: 16px 36px; background: var(--secondary); color: #fff; border: none; border-radius: var(--radius-pill); font-size: 16px; font-weight: 600; font-family: var(--font); cursor: pointer; transition: all 0.35s var(--ease); box-shadow: 0 4px 20px rgba(10,0,106,0.2); }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 36px rgba(10,0,106,0.25); }
+.btn-secondary { display: inline-flex; align-items: center; gap: 10px; padding: 16px 36px; background: #fff; color: var(--secondary); border: 1px solid rgba(90,24,154,0.12); border-radius: var(--radius-pill); font-size: 16px; font-weight: 600; font-family: var(--font); cursor: pointer; transition: all 0.35s var(--ease); box-shadow: var(--shadow-sm); }
+.btn-secondary:hover { background: #f8f4ff; transform: translateY(-2px); box-shadow: var(--shadow-md); }
+
+/* Hero dashboard mockup */
+.hero-visual { position: relative; z-index: 2; }
+.hero-mockup { background: var(--bg-dark); border-radius: var(--radius-lg); overflow: hidden; border: 1px solid rgba(255,255,255,0.06); box-shadow: var(--shadow-xl); }
+.mockup-toolbar { display: flex; align-items: center; gap: 8px; padding: 14px 20px; background: rgba(255,255,255,0.03); border-bottom: 1px solid rgba(255,255,255,0.06); }
+.mockup-dot { width: 10px; height: 10px; border-radius: 50%; }
+.dot-r { background: #ff5f57; } .dot-y { background: #febc2e; } .dot-g { background: #28c840; }
+.mockup-url { flex: 1; margin-left: 12px; background: rgba(255,255,255,0.05); border-radius: 8px; padding: 6px 14px; font-size: 12px; color: rgba(255,255,255,0.3); font-family: monospace; }
+.mockup-body { padding: 24px; min-height: 360px; background: linear-gradient(180deg, rgba(10,0,26,1), rgba(20,0,50,1)); display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.dashboard-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(199,125,255,0.2); border-radius: 12px; padding: 16px; opacity: 0; animation: dashIn 0.6s var(--ease) forwards; }
+.dashboard-card:nth-child(1) { animation-delay: 0.2s; }
+.dashboard-card:nth-child(2) { animation-delay: 0.4s; }
+.dashboard-card:nth-child(3) { animation-delay: 0.6s; grid-column: 1 / -1; }
+.dashboard-card:nth-child(4) { animation-delay: 0.8s; }
+@keyframes dashIn { to { opacity: 1; transform: translateY(0); } from { opacity: 0; transform: translateY(10px); } }
+.card-label { font-size: 11px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 8px; }
+.card-value { font-size: 28px; font-weight: 800; color: #C77DFF; margin-bottom: 6px; }
+.card-unit { font-size: 13px; color: rgba(255,255,255,0.5); }
+.card-bar { width: 100%; height: 4px; background: rgba(255,255,255,0.08); border-radius: 2px; margin-top: 10px; overflow: hidden; }
+.card-bar-fill { height: 100%; background: linear-gradient(90deg, #C77DFF, #5A189A); border-radius: 2px; }
+.card-bar-1 { width: 75%; }
+.card-bar-2 { width: 85%; }
+.card-bar-3 { width: 92%; }
+
+/* STATS BAND */
+.stats-band { padding: 64px 0; background: #fff; border-top: 1px solid var(--border-light); border-bottom: 1px solid var(--border-light); }
+.stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); }
+.stat-item { text-align: center; padding: 32px 16px; position: relative; }
+.stat-item::after { content: ''; position: absolute; top: 20%; right: 0; height: 60%; width: 1px; background: linear-gradient(to bottom, transparent, var(--border-light), transparent); }
+.stat-item:last-child::after { display: none; }
+.stat-val { font-size: clamp(36px, 4.5vw, 56px); font-weight: 800; letter-spacing: -2px; line-height: 1; margin-bottom: 8px; background: linear-gradient(135deg, var(--module-color), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.stat-label { font-size: 14px; color: var(--text-muted); font-weight: 500; }
+@media (max-width: 768px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } .stat-item:nth-child(2)::after { display: none; } }
+
+/* SECTION HEADERS */
+.section-header { text-align: center; max-width: 680px; margin: 0 auto clamp(48px, 6vw, 80px); }
+.section-eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--module-color); margin-bottom: 20px; }
+.section-eyebrow-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--module-color); }
+.section-title { font-size: clamp(32px, 4.5vw, 52px); font-weight: 800; line-height: 1.1; letter-spacing: -1.5px; color: var(--secondary); margin-bottom: 20px; }
+.section-desc { font-size: clamp(16px, 1.3vw, 18px); line-height: 1.7; color: var(--text-muted); }
+
+/* FEATURES */
+.features { padding: var(--section-pad) 0; }
+.features-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+.feature-card { background: #fff; border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: clamp(32px, 3vw, 44px); transition: all 0.4s var(--ease); position: relative; overflow: hidden; }
+.feature-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--module-color), var(--accent)); transform: scaleX(0); transform-origin: left; transition: transform 0.4s var(--ease); }
+.feature-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: transparent; }
+.feature-card:hover::before { transform: scaleX(1); }
+.feature-icon { width: 52px; height: 52px; border-radius: 14px; background: linear-gradient(135deg, rgba(199,125,255,0.06), rgba(90,24,154,0.06)); border: 1px solid var(--border-light); display: flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 24px; }
+.feature-title { font-size: 19px; font-weight: 700; color: var(--secondary); margin-bottom: 10px; letter-spacing: -0.3px; }
+.feature-desc { font-size: 15px; color: var(--text-muted); line-height: 1.6; }
+@media (max-width: 1024px) { .features-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px) { .features-grid { grid-template-columns: 1fr; } }
+
+/* HOW IT WORKS */
+.how-it-works { padding: var(--section-pad) 0; background: linear-gradient(180deg, #f8f4ff, var(--bg)); }
+.hiw-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.hiw-card { background: #fff; border: 1px solid var(--border-light); border-radius: var(--radius-lg); padding: clamp(32px, 3vw, 48px); text-align: center; transition: all 0.4s var(--ease); position: relative; }
+.hiw-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+.hiw-step { display: flex; align-items: center; justify-content: center; width: 64px; height: 64px; margin: 0 auto 24px; border-radius: 50%; background: linear-gradient(135deg, rgba(199,125,255,0.1), rgba(90,24,154,0.08)); border: 2px solid var(--module-color); font-size: 32px; font-weight: 800; color: var(--module-color); }
+.hiw-title { font-size: 22px; font-weight: 700; color: var(--secondary); margin-bottom: 12px; }
+.hiw-desc { font-size: 15px; color: var(--text-muted); line-height: 1.6; }
+.hiw-arrow { display: none; position: absolute; right: -40px; top: 50%; transform: translateY(-50%); font-size: 32px; color: var(--module-color); }
+.hiw-card:not(:last-child) .hiw-arrow { display: flex; }
+@media (max-width: 900px) { .hiw-grid { grid-template-columns: 1fr; } .hiw-arrow { display: none !important; } }
+
+/* FAQ */
+.faq { padding: var(--section-pad) 0; }
+.faq-list { max-width: 780px; margin: 0 auto; }
+.faq-item { border-bottom: 1px solid var(--border-light); }
+.faq-q { display: flex; justify-content: space-between; align-items: center; padding: 28px 0; cursor: pointer; font-size: 18px; font-weight: 600; color: var(--secondary); transition: color 0.2s; }
+.faq-q:hover { color: var(--module-color); }
+.faq-q svg { transition: transform 0.3s; flex-shrink: 0; margin-left: 16px; }
+.faq-item.open .faq-q svg { transform: rotate(45deg); }
+.faq-a { max-height: 0; overflow: hidden; transition: max-height 0.4s var(--ease-smooth); }
+.faq-a-inner { padding: 0 0 28px; font-size: 15px; color: var(--text-muted); line-height: 1.7; }
+.faq-item.open .faq-a { max-height: 300px; }
+
+/* CTA */
+.cta-section { padding: var(--section-pad) 0; text-align: center; position: relative; overflow: hidden; }
+.cta-section::before { content: ''; position: absolute; width: 600px; height: 600px; border-radius: 50%; background: radial-gradient(circle, rgba(199,125,255,0.06), transparent 60%); top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; }
+.cta-title { font-size: clamp(32px, 4.5vw, 52px); font-weight: 800; letter-spacing: -1.5px; line-height: 1.1; color: var(--secondary); margin-bottom: 20px; }
+.cta-desc { font-size: clamp(16px, 1.3vw, 18px); color: var(--text-muted); line-height: 1.7; max-width: 520px; margin: 0 auto 40px; }
+.cta-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+/* FOOTER */
+.footer { padding: 80px 0 40px; border-top: 1px solid var(--border-light); }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+.footer-brand-name { font-size: 22px; font-weight: 800; color: var(--secondary); margin-bottom: 12px; }
+.footer-brand-claim { font-size: 14px; color: var(--text-muted); font-style: italic; margin-bottom: 16px; }
+.footer-desc { font-size: 14px; color: var(--text-muted); line-height: 1.7; max-width: 300px; }
+.footer-col-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: var(--secondary); margin-bottom: 20px; }
+.footer-col a { display: block; font-size: 14px; color: var(--text-muted); padding: 5px 0; transition: color 0.2s; font-weight: 500; }
+.footer-col a:hover { color: var(--primary); }
+.footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 32px; border-top: 1px solid var(--border-light); font-size: 13px; color: var(--text-muted); flex-wrap: wrap; gap: 16px; }
+@media (max-width: 768px) { .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; } }
+@media (max-width: 500px) { .footer-grid { grid-template-columns: 1fr; } }
+
+/* ANIMATIONS */
+.reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s var(--ease-smooth), transform 0.8s var(--ease-smooth); }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-d1 { transition-delay: 0.1s; } .reveal-d2 { transition-delay: 0.2s; } .reveal-d3 { transition-delay: 0.3s; }
+@media (max-width: 960px) { .nav-links { display: none; } .nav-mobile { display: flex; flex-direction: column; } .hero-grid { grid-template-columns: 1fr; } .hero-visual { order: -1; } }
+</style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand"><div class="nav-logo"></div><span>Amira</span></a>
+    <ul class="nav-links">
+      <li><a href="agentic.html" class="nav-link">Amira.agentic</a></li>
+      <li><a href="analyze.html" class="nav-link">Amira.analyze</a></li>
+      <li><a href="assist.html" class="nav-link">Amira.assist</a></li>
+      <li><a href="coach.html" class="nav-link active">Amira.coach</a></li>
+      <li><a href="branchen.html" class="nav-link" data-de="Branchen" data-en="Industries">Branchen</a></li>
+      <li><span class="lang-toggle" id="langSwitch" onclick="toggleLang()">EN</span></li>
+      <li><a href="#cta" class="nav-cta-btn" data-de="Demo buchen" data-en="Book Demo">Demo buchen</a></li>
+    </ul>
+    <button class="nav-mobile" onclick="document.querySelector('.nav-links').classList.toggle('show')"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-orb hero-orb-1"></div><div class="hero-orb hero-orb-2"></div>
+  <div class="container">
+    <div class="hero-grid">
+      <div class="hero-content">
+        <div class="hero-badge"><span class="hero-badge-tag">COACH</span><span data-de="KI-gestütztes Training" data-en="AI-Powered Training">KI-gestütztes Training</span></div>
+        <h1><span data-de="Messbar besser." data-en="Measurably Better.">Messbar besser.</span><br><span class="highlight" data-de="Ihre Teams trainieren." data-en="Your Teams Train.">Ihre Teams trainieren.</span></h1>
+        <p class="hero-desc" data-de="Amira.coach trainiert Ihre Teams mit realistischen Simulationen, Echtzeit-Coaching und Performance-Analysen." data-en="Amira.coach trains your teams with realistic simulations, real-time coaching, and performance analytics.">Amira.coach trainiert Ihre Teams mit realistischen Simulationen, Echtzeit-Coaching und Performance-Analysen.</p>
+        <div class="hero-actions">
+          <a href="#cta" class="btn-primary" data-de="Demo buchen" data-en="Book a Demo">Demo buchen <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+          <a href="#how-it-works" class="btn-secondary" data-de="Funktionsweise entdecken" data-en="Explore How It Works">Funktionsweise entdecken</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-mockup">
+          <div class="mockup-toolbar"><div class="mockup-dot dot-r"></div><div class="mockup-dot dot-y"></div><div class="mockup-dot dot-g"></div><div class="mockup-url">amira-ai.de/coach</div></div>
+          <div class="mockup-body">
+            <div class="dashboard-card">
+              <div class="card-label" data-de="Simulations-Fortschritt" data-en="Simulation Progress">Simulations-Fortschritt</div>
+              <div class="card-value">68%</div>
+              <div class="card-unit" data-de="Absolviert" data-en="Completed">Absolviert</div>
+              <div class="card-bar"><div class="card-bar-fill card-bar-1"></div></div>
+            </div>
+            <div class="dashboard-card">
+              <div class="card-label" data-de="Coaching Score" data-en="Coaching Score">Coaching Score</div>
+              <div class="card-value">8.5</div>
+              <div class="card-unit" data-de="von 10" data-en="of 10">von 10</div>
+              <div class="card-bar"><div class="card-bar-fill card-bar-2"></div></div>
+            </div>
+            <div class="dashboard-card">
+              <div class="card-label" data-de="Performance-Verbesserung" data-en="Performance Improvement">Performance-Verbesserung</div>
+              <div class="card-value">+35%</div>
+              <div class="card-unit" data-de="seit dem Start" data-en="since start">seit dem Start</div>
+              <div class="card-bar"><div class="card-bar-fill card-bar-3"></div></div>
+            </div>
+            <div class="dashboard-card">
+              <div class="card-label" data-de="Erfolgsquote" data-en="Success Rate">Erfolgsquote</div>
+              <div class="card-value">92%</div>
+              <div class="card-unit" data-de="durchschnittlich" data-en="average">durchschnittlich</div>
+              <div class="card-bar"><div class="card-bar-fill card-bar-3"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="stats-band">
+  <div class="container"><div class="stats-grid">
+    <div class="stat-item reveal"><div class="stat-val">-70%</div><div class="stat-label" data-de="Einarbeitungszeit" data-en="Onboarding Time">Einarbeitungszeit</div></div>
+    <div class="stat-item reveal reveal-d1"><div class="stat-val">+35%</div><div class="stat-label" data-de="Performance" data-en="Performance">Performance</div></div>
+    <div class="stat-item reveal reveal-d2"><div class="stat-val">24/7</div><div class="stat-label" data-de="Training verfügbar" data-en="Training Available">Training verfügbar</div></div>
+    <div class="stat-item reveal reveal-d3"><div class="stat-val">92%</div><div class="stat-label" data-de="Erfolgsquote" data-en="Success Rate">Erfolgsquote</div></div>
+  </div></div>
+</section>
+
+<section class="features" id="features">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-eyebrow"><span class="section-eyebrow-dot"></span> Features</div>
+      <h2 class="section-title" data-de="Alles für perfektes Training" data-en="Everything for Perfect Training">Alles für perfektes Training</h2>
+      <p class="section-desc" data-de="Amira.coach kombiniert KI-Simulationen mit intelligenter Analyse für messbaren Erfolg." data-en="Amira.coach combines AI simulations with intelligent analysis for measurable success.">Amira.coach kombiniert KI-Simulationen mit intelligenter Analyse für messbaren Erfolg.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card reveal"><div class="feature-icon">🎮</div><div class="feature-title" data-de="KI-Simulationen" data-en="AI Simulations">KI-Simulationen</div><div class="feature-desc" data-de="Realistische Szenarien, die kontinuierlich an echte Fälle adaptiert werden." data-en="Realistic scenarios that continuously adapt to real cases.">Realistische Szenarien, die kontinuierlich an echte Fälle adaptiert werden.</div></div>
+      <div class="feature-card reveal reveal-d1"><div class="feature-icon">💬</div><div class="feature-title" data-de="Instant Coaching" data-en="Instant Coaching">Instant Coaching</div><div class="feature-desc" data-de="Echtzeit-Feedback und Tipps während Training und Echtfall-Interaktionen." data-en="Real-time feedback and tips during training and live interactions.">Echtzeit-Feedback und Tipps während Training und Echtfall-Interaktionen.</div></div>
+      <div class="feature-card reveal reveal-d2"><div class="feature-icon">📊</div><div class="feature-title" data-de="Performance-Analyse" data-en="Performance Analysis">Performance-Analyse</div><div class="feature-desc" data-de="Detaillierte Metriken zu Lösungsqualität, Geschwindigkeit und Kundenzufriedenheit." data-en="Detailed metrics on solution quality, speed, and customer satisfaction.">Detaillierte Metriken zu Lösungsqualität, Geschwindigkeit und Kundenzufriedenheit.</div></div>
+      <div class="feature-card reveal"><div class="feature-icon">📞</div><div class="feature-title" data-de="Coach-Anruf" data-en="Coach Call">Coach-Anruf</div><div class="feature-desc" data-de="Persönliche 1:1 Gespräche mit KI-Coach zur Vertiefung der Lernziele." data-en="Personal 1:1 sessions with AI coach to deepen learning goals.">Persönliche 1:1 Gespräche mit KI-Coach zur Vertiefung der Lernziele.</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="how-it-works" id="how-it-works">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-eyebrow"><span class="section-eyebrow-dot"></span> <span data-de="Funktionsweise" data-en="How It Works">Funktionsweise</span></div>
+      <h2 class="section-title" data-de="Der 3-Schritte Prozess" data-en="The 3-Step Process">Der 3-Schritte Prozess</h2>
+      <p class="section-desc" data-de="Simulieren → Trainieren → Optimieren" data-en="Simulate → Train → Optimize">Simulieren → Trainieren → Optimieren</p>
+    </div>
+    <div class="hiw-grid">
+      <div class="hiw-card reveal">
+        <div class="hiw-step">1</div>
+        <h3 class="hiw-title" data-de="Simulieren" data-en="Simulate">Simulieren</h3>
+        <p class="hiw-desc" data-de="Teams durchlaufen realistische Szenarien in sicherer Umgebung. Jede Simulation basiert auf echten Kundeninteraktionen." data-en="Teams work through realistic scenarios in a safe environment. Each simulation is based on real customer interactions.">Teams durchlaufen realistische Szenarien in sicherer Umgebung. Jede Simulation basiert auf echten Kundeninteraktionen.</p>
+        <div class="hiw-arrow">→</div>
+      </div>
+      <div class="hiw-card reveal reveal-d1">
+        <div class="hiw-step">2</div>
+        <h3 class="hiw-title" data-de="Trainieren" data-en="Train">Trainieren</h3>
+        <p class="hiw-desc" data-de="KI-Coach gibt sofortiges, personalisiertes Feedback. Lernziele werden individuell angepasst und vertieft." data-en="AI coach provides instant, personalized feedback. Learning goals adapt to individual needs.">KI-Coach gibt sofortiges, personalisiertes Feedback. Lernziele werden individuell angepasst und vertieft.</p>
+        <div class="hiw-arrow">→</div>
+      </div>
+      <div class="hiw-card reveal reveal-d2">
+        <div class="hiw-step">3</div>
+        <h3 class="hiw-title" data-de="Optimieren" data-en="Optimize">Optimieren</h3>
+        <p class="hiw-desc" data-de="Performance-Analysen zeigen Fortschritt. Teams setzen neue Ziele und werden kontinuierlich besser." data-en="Performance analytics show progress. Teams set new goals and continuously improve.">Performance-Analysen zeigen Fortschritt. Teams setzen neue Ziele und werden kontinuierlich besser.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="faq">
+  <div class="container">
+    <div class="section-header"><div class="section-eyebrow"><span class="section-eyebrow-dot"></span> FAQ</div><h2 class="section-title" data-de="Häufig gestellte Fragen" data-en="Frequently Asked Questions">Häufig gestellte Fragen</h2></div>
+    <div class="faq-list">
+      <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')" data-de="Welche Simulationstypen stehen zur Verfügung?" data-en="What simulation types are available?">Welche Simulationstypen stehen zur Verfügung? <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div><div class="faq-a"><div class="faq-a-inner" data-de="Wir unterstützen kundenservice-Szenarien, Verkaufsgespräche, Beschwerdeverarbeitung, Technische Support-Fälle und Escalation-Trainings. Alle Simulationen können an Ihre Branche und spezifischen Anforderungen angepasst werden." data-en="We support customer service scenarios, sales conversations, complaint handling, technical support cases, and escalation training. All simulations can be customized to your industry and requirements.">Wir unterstützen kundenservice-Szenarien, Verkaufsgespräche, Beschwerdeverarbeitung, Technische Support-Fälle und Escalation-Trainings. Alle Simulationen können an Ihre Branche und spezifischen Anforderungen angepasst werden.</div></div></div>
+      <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')" data-de="Wie funktioniert die KI-gestützte Coaching-Methodik?" data-en="How does AI-powered coaching work?">Wie funktioniert die KI-gestützte Coaching-Methodik? <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div><div class="faq-a"><div class="faq-a-inner" data-de="Unser Coaching-System basiert auf bewährten Methoden: Echtzeit-Feedback während Simulationen, Analyse von Stärken und Verbesserungsbereichen, personalisierte Lernpfade und regelmäßige 1:1 Coach-Anrufe. Der KI-Coach lernt aus jeder Interaktion." data-en="Our coaching system is based on proven methods: real-time feedback during simulations, analysis of strengths and improvement areas, personalized learning paths, and regular 1:1 coaching calls. The AI coach learns from every interaction.">Unser Coaching-System basiert auf bewährten Methoden: Echtzeit-Feedback während Simulationen, Analyse von Stärken und Verbesserungsbereichen, personalisierte Lernpfade und regelmäßige 1:1 Coach-Anrufe. Der KI-Coach lernt aus jeder Interaktion.</div></div></div>
+      <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')" data-de="Wie wird der ROI gemessen?" data-en="How is ROI measured?">Wie wird der ROI gemessen? <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div><div class="faq-a"><div class="faq-a-inner" data-de="Wir tracken konkrete Metriken: Reduktion der Onboarding-Zeit, Steigerung der Lösungsrate, Erhöhung der Kundenzufriedenheit (CSAT), Senkung von Eskalationen und Umsatzsteigerungen im Sales-Bereich. Ein detailliertes Dashboard zeigt alle KPIs in Echtzeit." data-en="We track concrete metrics: reduction in onboarding time, increase in resolution rate, improvement in customer satisfaction (CSAT), reduction in escalations, and revenue growth in sales areas. A detailed dashboard shows all KPIs in real-time.">Wir tracken konkrete Metriken: Reduktion der Onboarding-Zeit, Steigerung der Lösungsrate, Erhöhung der Kundenzufriedenheit (CSAT), Senkung von Eskalationen und Umsatzsteigerungen im Sales-Bereich. Ein detailliertes Dashboard zeigt alle KPIs in Echtzeit.</div></div></div>
+      <div class="faq-item"><div class="faq-q" onclick="this.parentElement.classList.toggle('open')" data-de="Wie lange dauert es, bis erste Ergebnisse sichtbar werden?" data-en="How long until first results are visible?">Wie lange dauert es, bis erste Ergebnisse sichtbar werden? <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></div><div class="faq-a"><div class="faq-a-inner" data-de="Erste messbare Verbesserungen zeigen sich bereits nach 2-3 Wochen Training. Nach 8-12 Wochen ist ein klarer Performance-Uplift erkennbar. Die volle Wirkung wird nach ca. 6 Monaten erreicht." data-en="First measurable improvements appear after 2-3 weeks of training. After 8-12 weeks, a clear performance uplift is visible. Full impact is typically achieved after about 6 months.">Erste messbare Verbesserungen zeigen sich bereits nach 2-3 Wochen Training. Nach 8-12 Wochen ist ein klarer Performance-Uplift erkennbar. Die volle Wirkung wird nach ca. 6 Monaten erreicht.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section" id="cta">
+  <div class="container">
+    <h2 class="cta-title reveal" data-de="Bereit für messbar bessere Teams?" data-en="Ready for Measurably Better Teams?">Bereit für messbar bessere Teams?</h2>
+    <p class="cta-desc reveal reveal-d1" data-de="Erleben Sie in einer Demo, wie Amira.coach Ihre Teams zum Training aktiviert und ihre Performance steigert." data-en="Experience how Amira.coach activates your teams for training and boosts their performance.">Erleben Sie in einer Demo, wie Amira.coach Ihre Teams zum Training aktiviert und ihre Performance steigert.</p>
+    <div class="cta-actions reveal reveal-d2">
+      <a href="mailto:rainer@ac-group.ai" class="btn-primary" data-de="Demo vereinbaren" data-en="Schedule Demo">Demo vereinbaren <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      <a href="index.html" class="btn-secondary" data-de="Zurück zur Übersicht" data-en="Back to Overview">Zurück zur Übersicht</a>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div><div class="footer-brand-name">Amira AI</div><div class="footer-brand-claim">almost human</div><div class="footer-desc" data-de="KI-Automatisierung für Kundenservice und Vertrieb." data-en="AI automation for customer service and sales.">KI-Automatisierung für Kundenservice und Vertrieb.</div></div>
+      <div class="footer-col"><div class="footer-col-title" data-de="Produkte" data-en="Products">Produkte</div><a href="agentic.html">Amira.agentic</a><a href="analyze.html">Amira.analyze</a><a href="assist.html">Amira.assist</a><a href="coach.html">Amira.coach</a></div>
+      <div class="footer-col"><div class="footer-col-title" data-de="Branchen" data-en="Industries">Branchen</div><a href="branchen.html">E-Commerce</a><a href="branchen.html">Contact Center</a><a href="branchen.html">Automotive</a></div>
+      <div class="footer-col"><div class="footer-col-title" data-de="Unternehmen" data-en="Company">Unternehmen</div><a href="#">Über uns</a><a href="#">Kontakt</a><a href="#">Impressum</a><a href="#">Datenschutz</a></div>
+    </div>
+    <div class="footer-bottom"><span>© 2026 AC Süppmayer GmbH</span><span>Saarbrücken 🇩🇪 · Dubai 🇦🇪</span></div>
+  </div>
+</footer>
+
+<script>
+let currentLang = 'de';
+function toggleLang() {
+  currentLang = currentLang === 'de' ? 'en' : 'de';
+  document.getElementById('langSwitch').textContent = currentLang === 'de' ? 'EN' : 'DE';
+  document.querySelectorAll('[data-de]').forEach(el => { const t = el.getAttribute('data-' + currentLang); if (t) el.textContent = t; });
+  document.documentElement.lang = currentLang;
+}
+const obs = new IntersectionObserver(e => { e.forEach(x => { if (x.isIntersecting) x.target.classList.add('visible'); }); }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+window.addEventListener('scroll', () => { document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 80); }, { passive: true });
+</script>
+</body>
+</html>
